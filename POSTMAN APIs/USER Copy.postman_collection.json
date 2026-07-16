@@ -1,0 +1,120 @@
+{
+  "info": {
+    "_postman_id": "dca5d8e7-1008-4c7b-8fb8-d8fe8ac5053f",
+    "name": "USER Copy",
+    "description": "## User Authentication API\n\nThis collection handles **end-user authentication** for the application. It provides the complete session lifecycle — registration, login, and logout — for regular users interacting with the platform, routed through the local backend at `http://localhost:3000`.\n\n### Endpoints\n\n| Method | Endpoint | Description |\n|--------|----------|-------------|\n| `POST` | `/api/auth/user/register` | Register a new user account |\n| `POST` | `/api/auth/user/login` | Log in with existing credentials |\n| `GET` | `/api/auth/user/logout` | Log out the current session |\n\n### Usage\n\nStart with the **Register** request to create a new user account. Use the **Login** request to authenticate and begin a session. When done, call the **Logout** request to end the session securely.\n\n### Base URL\n\n```\nhttp://localhost:3000\n```",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51385893",
+    "_collection_link": "https://go.postman.co/collection/51385893-dca5d8e7-1008-4c7b-8fb8-d8fe8ac5053f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"fullName\":\"test1 test\",\r\n    \"email\":\"test@test1.com\",\r\n    \"password\":\"test\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/user/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "user",
+            "register"
+          ]
+        },
+        "description": "Registers a new end-user account in the application.\n\n**Method:** `POST`\n**Endpoint:** `/api/auth/user/register`\n\nSend a JSON body with the user's details (e.g. name, email, password). Returns the created user profile on success."
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"test@test.com\",\r\n    \"password\":\"test\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/user/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "user",
+            "login"
+          ]
+        },
+        "description": "Authenticates an existing user and initiates a session.\n\n**Method:** `POST`\n**Endpoint:** `/api/auth/user/login`\n\nSend a JSON body with the user's email and password. Returns a session token or cookie on successful authentication."
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/user/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "user",
+            "logout"
+          ]
+        },
+        "description": "Terminates the current user session.\n\n**Method:** `GET`\n**Endpoint:** `/api/auth/user/logout`\n\nNo request body required. Clears the active session token or cookie and returns a confirmation response."
+      },
+      "response": []
+    }
+  ]
+}

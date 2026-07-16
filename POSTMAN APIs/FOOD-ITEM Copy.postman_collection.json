@@ -1,0 +1,103 @@
+{
+  "info": {
+    "_postman_id": "b1c00531-53af-4873-92f6-e11481c20cf5",
+    "name": "FOOD-ITEM Copy",
+    "description": "## Food Item API\n\nThis collection covers the core endpoints for managing **food items** in the application. It provides the essential operations to interact with the food item resource exposed at `http://localhost:3000/api/food`.\n\n### Endpoints\n\n| Method | Endpoint | Description |\n|--------|----------|-------------|\n| `POST` | `/api/food` | **Create** a new food item |\n| `GET` | `/api/food` | **Retrieve** all food items |\n\n### Usage\n\nUse the **Create** request to add new food items to the system, and the **Get items** request to fetch the full list of available food items. These endpoints form the foundation of the food item management workflow.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51385893",
+    "_collection_link": "https://go.postman.co/collection/51385893-b1c00531-53af-4873-92f6-e11481c20cf5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "video",
+              "type": "file",
+              "uuid": "e2d266a2-3a3e-4666-8681-9c33d819664b",
+              "src": "postman-cloud:///1f17da68-7565-4060-a545-67b81077ad03"
+            },
+            {
+              "key": "name",
+              "value": "test meal",
+              "type": "text",
+              "uuid": "bd6baf69-4ef4-4422-9347-9fc896de7a5f"
+            },
+            {
+              "key": "description",
+              "value": "test description",
+              "type": "text",
+              "uuid": "e8802fe7-363a-4b07-aded-76c86a87bdb1"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/food",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "food"
+          ]
+        },
+        "description": "Creates a new food item in the system.\n\n**Method:** `POST`\n**Endpoint:** `/api/food`\n\nSend a JSON body with the food item details (e.g. name, description, price, category). Returns the newly created food item object with its assigned ID."
+      },
+      "response": []
+    },
+    {
+      "name": "Get items",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "video",
+              "type": "file",
+              "uuid": "e2d266a2-3a3e-4666-8681-9c33d819664b",
+              "src": "postman-cloud:///1f17da68-7565-4060-a545-67b81077ad03"
+            },
+            {
+              "key": "name",
+              "value": "test meal",
+              "type": "text",
+              "uuid": "bd6baf69-4ef4-4422-9347-9fc896de7a5f"
+            },
+            {
+              "key": "description",
+              "value": "test description",
+              "type": "text",
+              "uuid": "e8802fe7-363a-4b07-aded-76c86a87bdb1"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/food",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "food"
+          ]
+        },
+        "description": "Retrieves a list of all food items available in the system.\n\n**Method:** `GET`\n**Endpoint:** `/api/food`\n\nNo request body required. Returns an array of food item objects."
+      },
+      "response": []
+    }
+  ]
+}

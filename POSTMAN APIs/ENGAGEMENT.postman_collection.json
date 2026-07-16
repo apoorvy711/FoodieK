@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "FoodieK Engagement APIs",
+    "description": "Login first. Postman keeps the token cookie from the Login request, then use a food id returned by Get Foods for the remaining requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "foodId", "value": "PASTE_A_FOOD_ID_HERE" }
+  ],
+  "item": [
+    {
+      "name": "Login as user",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"your-user-email@example.com\",\n  \"password\": \"your-password\"\n}" },
+        "url": "{{baseUrl}}/auth/user/login"
+      }
+    },
+    {
+      "name": "Get foods (copy an _id into foodId)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/food" }
+    },
+    {
+      "name": "Share food",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"foodId\": \"{{foodId}}\"\n}" },
+        "url": "{{baseUrl}}/food/share"
+      }
+    },
+    {
+      "name": "Create comment",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"foodId\": \"{{foodId}}\",\n  \"text\": \"Postman comment test\"\n}" },
+        "url": "{{baseUrl}}/comments"
+      }
+    },
+    {
+      "name": "Get comments for food",
+      "request": { "method": "GET", "url": "{{baseUrl}}/comments/{{foodId}}" }
+    }
+  ]
+}

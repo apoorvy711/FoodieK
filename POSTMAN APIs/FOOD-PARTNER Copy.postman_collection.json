@@ -1,0 +1,115 @@
+{
+  "info": {
+    "_postman_id": "56c162e6-ff29-4eba-9b5b-d4e470f2c972",
+    "name": "FOOD-PARTNER Copy",
+    "description": "Food Partner authentication and self-account APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51385893"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"test-food-partner\",\n  \"contactName\": \"Owner Name\",\n  \"phone\": \"+91 9999999999\",\n  \"address\": \"Lucknow\",\n  \"email\": \"test-food-partner@test.com\",\n  \"password\": \"test123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/food-partner/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "auth", "food-partner", "register"]
+        },
+        "description": "Registers a new food partner account."
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test-food-partner@test.com\",\n  \"password\": \"test123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/food-partner/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "auth", "food-partner", "login"]
+        },
+        "description": "Logs in a food partner account and sets auth cookie."
+      },
+      "response": []
+    },
+    {
+      "name": "Me",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/auth/food-partner/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "auth", "food-partner", "me"]
+        },
+        "description": "Returns the current logged-in food partner profile from cookie session."
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/auth/food-partner/logout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "auth", "food-partner", "logout"]
+        },
+        "description": "Logs out the current food partner session."
+      },
+      "response": []
+    }
+  ]
+}

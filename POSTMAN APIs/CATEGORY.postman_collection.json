@@ -1,0 +1,153 @@
+{
+  "info": {
+    "_postman_id": "24e88178-c3b6-4b7e-b494-9f9ff4b6af11",
+    "name": "CATEGORY",
+    "description": "## CATEGORY\n\nThis collection provides a complete set of API endpoints for managing **food categories** within the application. It covers the full lifecycle of a category resource — from creation to deletion — and is designed to interact with the local backend server running at `http://localhost:3000`.\n\n### Endpoints\n\n| Method | Endpoint | Description |\n|--------|----------|-------------|\n| `POST` | `/api/categories` | Create a new category |\n| `GET` | `/api/categories` | Retrieve all categories |\n| `GET` | `/api/categories/:id` | Retrieve a specific category by ID |\n| `PATCH` | `/api/categories/:id` | Update an existing category by ID |\n| `DELETE` | `/api/categories/:id` | Delete a category by ID |\n\n### Base URL\n\n```\nhttp://localhost:3000\n```\n\n### Notes\n\n- All category endpoints are prefixed with `/api/categories`.\n- Requests that target a specific category require a valid category ID in the path.\n- This collection is part of the **Food-View-Modern** workspace and is intended for local development and testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51385893",
+    "_collection_link": "https://go.postman.co/collection/51385893-24e88178-c3b6-4b7e-b494-9f9ff4b6af11?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST Create Category",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\":\"Chinese\",\r\n    \"image\":\"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/categories",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories"
+          ]
+        },
+        "description": "Creates a new food category in the system.\n\n**Method:** `POST`\n**Endpoint:** `/api/categories`\n\nSend a JSON body with the category details (e.g. name, description). A successful request returns the newly created category object with its assigned ID."
+      },
+      "response": []
+    },
+    {
+      "name": "GET All Categories",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/categories",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories"
+          ]
+        },
+        "description": "Retrieves a list of all food categories available in the system.\n\n**Method:** `GET`\n**Endpoint:** `/api/categories`\n\nNo request body is required. Returns an array of category objects."
+      },
+      "response": []
+    },
+    {
+      "name": "GET Category By ID",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/categories/6a54ccbb671c1a02bc632ac5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories",
+            "6a54ccbb671c1a02bc632ac5"
+          ]
+        },
+        "description": "Retrieves a single food category by its unique ID.\n\n**Method:** `GET`\n**Endpoint:** `/api/categories/:id`\n\nReplace `:id` in the URL with a valid category ID. Returns the matching category object, or a 404 error if not found."
+      },
+      "response": []
+    },
+    {
+      "name": "PATCH Update Category",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\":\"Fast Food\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/categories/6a54ccbb671c1a02bc632ac5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories",
+            "6a54ccbb671c1a02bc632ac5"
+          ]
+        },
+        "description": "Updates one or more fields of an existing food category.\n\n**Method:** `PATCH`\n**Endpoint:** `/api/categories/:id`\n\nReplace `:id` with the target category's ID. Send a JSON body containing only the fields to update. Returns the updated category object."
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Category",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/categories/6a54ccbb671c1a02bc632ac5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "categories",
+            "6a54ccbb671c1a02bc632ac5"
+          ]
+        },
+        "description": "Permanently deletes a food category by its ID.\n\n**Method:** `DELETE`\n**Endpoint:** `/api/categories/:id`\n\nReplace `:id` with the ID of the category to remove. Returns a success confirmation or a 404 error if the category does not exist."
+      },
+      "response": []
+    }
+  ]
+}

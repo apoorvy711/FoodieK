@@ -1,0 +1,30 @@
+# Environment variables
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+*.log
+
+# Local media migrated to ImageKit
+frontend/vite-project/public/media/videos/
+frontend/vite-project/public/media/thumbnails/
+frontend/vite-project/public/media/restaurant-images/
+frontend/vite-project/src/assets/videos/
+frontend/vite-project/src/assets/restaurant-images/
+
+# Unused local video files - kept locally as backup
+vidoe/
+
+
+# Local MongoDB Compass connection configuration
+MongoDB_compass_connections.json
+
+
+# Local authentication testing files
+backend/qa-cookie.txt

@@ -1,0 +1,225 @@
+@import "./theme.css";
+
+/* ===========================
+   Page
+=========================== */
+
+.create-food-page {
+  min-height: 100dvh;
+  padding: clamp(1rem, 3vw, 2rem) clamp(0.875rem, 3vw, 1.5rem) 5rem;
+  background: #f7f8fc;
+  display: flex;
+  justify-content: center;
+}
+
+.create-food-card {
+  width: min(100%, 760px);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.create-food-header {
+  margin-bottom: 1.5rem;
+}
+
+.create-food-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #111827;
+}
+
+.create-food-subtitle {
+  margin-top: 0.5rem;
+  color: #6b7280;
+}
+
+/* ===========================
+   Form
+=========================== */
+
+.create-food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* ===========================
+   Inputs
+=========================== */
+
+.field-group input,
+.field-group textarea,
+.field-group select {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.25s;
+}
+
+.field-group textarea {
+  resize: vertical;
+  min-height: 7.5rem;
+}
+
+.field-group input:focus,
+.field-group textarea:focus,
+.field-group select:focus {
+  border-color: #ff6b35;
+
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
+}
+
+/* ===========================
+   Upload
+=========================== */
+
+.file-input-hidden {
+  display: none;
+}
+
+.file-dropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 18px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+  background: #fafafa;
+}
+
+.file-dropzone:hover {
+  border-color: #ff6b35;
+
+  background: #fff5f1;
+}
+
+.file-dropzone h3 {
+  font-size: 20px;
+
+  margin-bottom: 10px;
+}
+
+.file-dropzone p {
+  color: #6b7280;
+}
+
+/* ===========================
+   Preview
+=========================== */
+
+.video-preview {
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  border: 1px solid #ddd;
+}
+
+.video-preview video {
+  width: 100%;
+
+  display: block;
+}
+
+/* ===========================
+   Checkbox
+=========================== */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  width: 1.125rem !important;
+  height: 1.125rem !important;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #ff6b35;
+  flex-shrink: 0;
+}
+
+.checkbox-label span {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* ===========================
+   Notes
+=========================== */
+
+.small-note {
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.error-text {
+  color: red;
+
+  font-size: 14px;
+}
+
+/* ===========================
+   Button
+=========================== */
+
+.form-actions {
+  margin-top: 0.75rem;
+}
+
+.btn-primary {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: 14px;
+  background: #ff6b35;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #e95a28;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .create-food-page {
+    padding-bottom: 5.5rem;
+  }
+}
