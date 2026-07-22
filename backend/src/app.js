@@ -34,6 +34,7 @@ const allowedOrigins = new Set([
   "http://localhost:5174",
   "http://127.0.0.1:5174",
   "https://foodiek-frontend.onrender.com",
+  "http://3.110.48.151:5173",
 ]);
 
 app.use(
