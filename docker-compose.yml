@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: ./backend
+
+    container_name: foodiek-backend-compose
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - ./backend/.env.docker
+
+    environment:
+      MONGODB_URI: mongodb://host.docker.internal:27017/foodiek
+
+  frontend:
+    build:
+      context: ./frontend/vite-project
+
+    container_name: foodiek-frontend-compose
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend

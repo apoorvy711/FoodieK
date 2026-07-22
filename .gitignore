@@ -1,6 +1,7 @@
 # Environment variables
 .env
 .env.*
+backend/.env.docker
 
 # Dependencies
 node_modules/
