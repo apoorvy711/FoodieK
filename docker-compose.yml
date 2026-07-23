@@ -11,9 +11,6 @@ services:
     env_file:
       - ./backend/.env.docker
 
-    environment:
-      MONGODB_URI: mongodb://host.docker.internal:27017/foodiek
-
   frontend:
     build:
       context: ./frontend/vite-project
