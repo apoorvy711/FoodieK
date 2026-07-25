@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const express = require("express");
-app.set("trust proxy", 1);
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const dns = require("dns");
@@ -22,6 +21,7 @@ const categoryRoutes = require("./routes/category.routes");
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(
   helmet({
