@@ -181,7 +181,19 @@ const CreateFood = () => {
               onChange={handleVideo}
             />
 
-            <div className="file-dropzone" onClick={openFile}>
+            <div
+              className="file-dropzone"
+              role="button"
+              tabIndex={0}
+              aria-label="Upload food video"
+              onClick={openFile}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openFile();
+                }
+              }}
+            >
               <div className="file-dropzone-inner">
                 <h3>Click to Upload Video</h3>
 

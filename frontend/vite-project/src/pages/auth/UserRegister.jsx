@@ -50,9 +50,8 @@ const UserRegister = () => {
             Join to explore and enjoy delicious meals.
           </p>
         </header>
-        <nav className="auth-alt-action" style={{ marginTop: "-4px" }}>
-          <strong style={{ fontWeight: 600 }}>Switch:</strong>{" "}
-          <Link to="/user/register">User</Link> •{" "}
+        <nav className="auth-alt-action auth-route-switch">
+          <strong>Switch:</strong> <Link to="/user/register">User</Link> •{" "}
           <Link to="/food-partner/register">Food partner</Link>
         </nav>
         <form className="auth-form" onSubmit={handleSubmit} noValidate>

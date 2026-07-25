@@ -65,6 +65,7 @@
 .field-group textarea,
 .field-group select {
   width: 100%;
+  min-height: 44px;
   padding: 0.8rem 0.95rem;
   border-radius: 12px;
   border: 1px solid #d1d5db;
@@ -98,6 +99,7 @@
 .file-dropzone {
   border: 2px dashed #d1d5db;
   border-radius: 18px;
+  min-height: 120px;
   padding: clamp(1.25rem, 3vw, 2rem);
   cursor: pointer;
   transition: 0.3s;
@@ -109,6 +111,11 @@
   border-color: #ff6b35;
 
   background: #fff5f1;
+}
+
+.file-dropzone:focus-visible {
+  outline: 2px solid #ff6b35;
+  outline-offset: 3px;
 }
 
 .file-dropzone h3 {
@@ -181,7 +188,7 @@
 }
 
 .error-text {
-  color: red;
+  color: #dc2626;
 
   font-size: 14px;
 }

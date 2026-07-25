@@ -120,6 +120,7 @@
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1.02;
   letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
 }
 .food-detail-rating {
   flex: 0 0 auto;
@@ -138,6 +139,7 @@
   color: #64748b;
   font-size: 1.02rem;
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 .food-detail-meta-grid {
@@ -193,6 +195,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
 }
 .profile-pill {
@@ -229,6 +232,7 @@
 }
 .food-detail-actions button {
   min-height: 44px;
+  min-width: 44px;
   border-radius: 11px;
   font: inherit;
   font-size: 0.83rem;
@@ -257,6 +261,16 @@
   border-color: #fdba74;
   color: #c2410c;
   background: #fff7ed;
+}
+
+.food-detail-actions button:focus-visible,
+.comment-form textarea:focus-visible,
+.comment-form .btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.related-food-card:focus-visible,
+.reel-btn--ghost:focus-visible {
+  outline: 2px solid #fb923c;
+  outline-offset: 2px;
 }
 
 .food-detail-page > .food-detail-section {
@@ -341,6 +355,7 @@
 .btn-ghost {
   border: 0;
   border-radius: 9px;
+  min-height: 40px;
   padding: 9px 12px;
   color: #475569;
   background: #f1f5f9;
@@ -381,6 +396,7 @@
   align-self: flex-end;
   border: 0;
   border-radius: 10px;
+  min-height: 44px;
   padding: 11px 15px;
   color: #fff;
   background: #ea580c;
@@ -402,7 +418,12 @@
     grid-template-columns: 1fr;
   }
   .food-detail-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 0.5rem;
+  }
+
+  .food-detail-actions .btn-primary {
+    grid-column: span 2;
   }
 }
 
@@ -431,6 +452,19 @@
   .food-detail-actions .btn-primary {
     grid-column: span 2;
   }
+
+  .comment-modal-backdrop {
+    place-items: end center;
+    padding: 0;
+  }
+
+  .comment-modal {
+    width: 100%;
+    max-height: min(82dvh, 700px);
+    border-radius: 18px 18px 0 0;
+    padding: 1rem;
+  }
+
   .profile-pill-row {
     align-items: flex-start;
     flex-direction: column;

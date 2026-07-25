@@ -8,6 +8,8 @@ html {
   font-size: 16px;
   background-color: var(--color-bg);
   color: var(--color-text);
+  scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 html,
@@ -21,11 +23,16 @@ body {
   overflow-x: hidden;
   background-color: var(--color-bg);
   color: var(--color-text);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition:
     background-color 180ms ease,
     color 180ms ease;
+}
+
+a {
+  color: inherit;
 }
 
 img,
@@ -44,6 +51,134 @@ select {
 
 button {
   min-height: 44px;
+}
+
+button,
+input,
+textarea,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 80%, white);
+  outline-offset: 2px;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.btn-primary {
+  color: #fff;
+  background: #ea580c;
+  box-shadow: 0 10px 24px rgba(234, 88, 12, 0.22);
+}
+
+.btn-primary:hover {
+  background: #c2410c;
+}
+
+.btn-secondary {
+  color: #334155;
+  border-color: #dbe3ed;
+  background: #fff;
+}
+
+.btn-secondary:hover {
+  color: #172033;
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.glass-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.empty-state--hero {
+  width: min(100%, 40rem);
+  margin: 0 auto;
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+  border: 1px solid #dbe3ed;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+  text-align: center;
+}
+
+.empty-state__icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 1.35rem;
+  background: #fff7ed;
+}
+
+.empty-state__actions {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.skeleton-card {
+  width: min(100%, 52rem);
+  min-height: 9.5rem;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #e2e8f0 20%, #f1f5f9 40%, #e2e8f0 60%);
+  background-size: 240% 100%;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 .theme-toggle {
@@ -65,4 +200,24 @@ button {
 
 .theme-toggle:hover {
   transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .theme-toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
 }

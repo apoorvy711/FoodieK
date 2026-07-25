@@ -24,6 +24,7 @@
 .guest-profile-copy {
   display: grid;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .guest-auth-sections {
@@ -62,6 +63,8 @@
 }
 
 .guest-auth-btn {
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 11px;
   padding: 0.7rem 1rem;
   font-weight: 700;
@@ -93,6 +96,7 @@
   margin-top: 0.25rem;
   border: 1px solid #fecaca;
   border-radius: 12px;
+  min-height: 44px;
   padding: 0.72rem 0.95rem;
   color: #b91c1c;
   background: #fff5f5;
@@ -113,10 +117,20 @@
 }
 
 .auth-route-prompt-btn {
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 11px;
   padding: 0.72rem 1rem;
   font-weight: 700;
   border: 1px solid transparent;
+}
+
+.guest-auth-btn:focus-visible,
+.profile-logout-btn:focus-visible,
+.auth-route-prompt-btn:focus-visible,
+.auth-required-modal-btn:focus-visible {
+  outline: 2px solid #fb923c;
+  outline-offset: 2px;
 }
 
 .auth-route-prompt-btn--primary {
@@ -169,10 +183,37 @@
 .auth-required-modal-btn {
   border: 1px solid transparent;
   border-radius: 11px;
+  min-height: 44px;
+  min-width: 44px;
   padding: 0.72rem 0.95rem;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (max-width: 620px) {
+  .guest-profile-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .guest-auth-actions,
+  .auth-route-prompt-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .guest-auth-btn,
+  .auth-route-prompt-btn,
+  .profile-logout-btn,
+  .auth-required-modal-btn {
+    width: 100%;
+  }
+
+  .auth-required-modal {
+    border-radius: 16px;
+    padding: 1rem;
+  }
 }
 
 .auth-required-modal-btn--primary {

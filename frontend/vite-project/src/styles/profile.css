@@ -25,6 +25,10 @@
   margin-right: auto;
 }
 
+.profile-page > * + * {
+  margin-top: 1.25rem;
+}
+
 .profile-header {
   position: relative;
   overflow: hidden;
@@ -95,6 +99,7 @@
   color: #64748b;
   font-size: 0.95rem;
   line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .profile-stats {
@@ -139,6 +144,7 @@
 .profile-tile {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   min-height: 106px;
   padding: 20px;
   border: 1px solid #e2e8f0;
@@ -192,11 +198,13 @@
   margin-bottom: 5px;
   color: #172033;
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 .checkout-card p {
   margin: 3px 0;
   color: #64748b;
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 .checkout-card .btn-secondary {
   border: 1px solid #fed7aa;
@@ -302,6 +310,33 @@
   cursor: pointer;
 }
 
+.profile-page .btn-secondary {
+  border: 1px solid #dbe3ed;
+  border-radius: 11px;
+  padding: 10px 14px;
+  color: #334155;
+  background: #fff;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-page .btn-secondary:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.profile-page .btn-secondary:focus-visible,
+.profile-page .btn-primary:focus-visible,
+.profile-tile:focus-visible,
+.notification-card:focus-visible,
+.tab-btn:focus-visible,
+.profile-actions button:focus-visible {
+  outline: 2px solid #fb923c;
+  outline-offset: 2px;
+}
+
 .notification-list {
   display: grid;
   gap: 11px;
@@ -401,6 +436,7 @@
   position: relative;
   z-index: 1;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 .profile-actions button {
@@ -470,6 +506,7 @@
 }
 .review-card p {
   margin: 7px 0;
+  overflow-wrap: anywhere;
 }
 
 :root[data-theme="dark"] .profile-page {
@@ -545,12 +582,22 @@
   .profile-page {
     padding-bottom: 5.5rem;
   }
+
+  .profile-page > * + * {
+    margin-top: 1rem;
+  }
+
   .cart-grid {
     grid-template-columns: 1fr;
   }
+
   .checkout-total {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .notification-card {
+    align-items: flex-start;
   }
 }
 
@@ -575,9 +622,11 @@
     align-items: flex-start;
     flex-direction: column;
   }
-  .notification-card {
-    align-items: flex-start;
+
+  .profile-page .btn-secondary {
+    width: 100%;
   }
+
   .profile-actions {
     flex-wrap: wrap;
   }

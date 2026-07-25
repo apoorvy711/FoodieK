@@ -5,6 +5,7 @@
   height: 100dvh;
   background: linear-gradient(180deg, #f8fbff 0%, #f5f8ff 100%);
   overflow: hidden;
+  overflow-x: clip;
 }
 
 /* Vertical feed with snap scrolling */
@@ -166,7 +167,8 @@
   align-self: flex-start;
   border: none;
   border-radius: 999px;
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 8px 14px;
   background: var(--color-accent);
   color: #fff;
   font-weight: 600;
@@ -180,9 +182,15 @@
 
 .reel-btn {
   align-self: flex-start;
-  background: linear-gradient(135deg, var(--color-accent) 0%, #3b82f6 100%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  background: #ea580c;
   color: #fff;
   border-radius: 999px;
+  border: 1px solid transparent;
   padding: 10px 16px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -195,11 +203,7 @@
 }
 
 .reel-btn:hover {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent-hover) 0%,
-    #2563eb 100%
-  );
+  background: #c2410c;
   transform: translateY(-1px);
 }
 .reel-btn:active {
@@ -233,6 +237,9 @@
 .reel-action {
   width: clamp(2.75rem, 6vw, 3rem);
   height: clamp(2.75rem, 6vw, 3rem);
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -254,6 +261,17 @@
 
 .reel-action:active {
   transform: translateY(1px);
+}
+
+.reel-action:focus-visible,
+.reel-btn:focus-visible,
+.feed-comment-header button:focus-visible,
+.feed-comment-form button:focus-visible,
+.feed-comment-form textarea:focus-visible,
+.reel-comment-input:focus-visible,
+.reel-comment-submit:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 .reel-action__count {
@@ -317,6 +335,7 @@
 .feed-comment-header button {
   border: 0;
   border-radius: 8px;
+  min-height: 40px;
   padding: 8px 12px;
   background: #f3f4f6;
   cursor: pointer;
@@ -355,9 +374,28 @@
   align-self: end;
   border: 0;
   border-radius: 10px;
+  min-height: 44px;
   padding: 0.7rem 0.9rem;
   background: var(--color-accent);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .reel-content {
+    padding-right: clamp(3.75rem, 18vw, 4.5rem);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0) + 6rem);
+  }
+
+  .feed-comment-backdrop {
+    place-items: end center;
+    padding: 0;
+  }
+
+  .feed-comment-modal {
+    width: 100%;
+    max-height: min(82dvh, 700px);
+    border-radius: 18px 18px 0 0;
+  }
 }

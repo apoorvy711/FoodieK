@@ -37,6 +37,10 @@
   gap: var(--space-5);
 }
 
+.auth-card--wide {
+  width: min(100%, 460px);
+}
+
 .auth-card header {
   text-align: center;
 }
@@ -77,6 +81,7 @@ form.auth-form {
   appearance: none;
   border: 1px solid var(--color-border);
   background: var(--color-surface-alt);
+  min-height: 44px;
   padding: 0.75rem 0.875rem;
   font: inherit;
   border-radius: var(--radius-sm);
@@ -118,6 +123,26 @@ form.auth-form {
 }
 
 .field-group input:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: var(--color-surface);
+}
+
+.field-group textarea,
+.field-group select {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  min-height: 44px;
+  padding: 0.75rem 0.875rem;
+  font: inherit;
+  border-radius: var(--radius-sm);
+  outline: none;
+  color: var(--color-text);
+}
+
+.field-group textarea:focus-visible,
+.field-group select:focus-visible {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 55%, transparent);
   background: var(--color-surface);
@@ -190,6 +215,34 @@ button.auth-submit:focus-visible {
   font-weight: 600;
 }
 
+.auth-route-switch {
+  margin-top: -4px;
+}
+
+.auth-route-switch strong {
+  font-weight: 600;
+}
+
+.auth-chooser-actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.auth-link-button {
+  text-decoration: none;
+}
+
+.auth-link-button--secondary {
+  color: var(--color-text);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+}
+
+.auth-link-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .small-note {
   font-size: 0.7rem;
   color: var(--color-text-secondary);
@@ -201,6 +254,11 @@ button.auth-submit:focus-visible {
 }
 
 @media (max-width: 480px) {
+  .auth-page-wrapper {
+    align-items: flex-start;
+    padding-top: clamp(1rem, 6vw, 2rem);
+  }
+
   .auth-card {
     padding: var(--space-5) var(--space-4) var(--space-4);
   }

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../../styles/profile-hub.css";
 
 const AuthRequiredModal = ({
   open,
@@ -62,10 +63,11 @@ const AuthRequiredModal = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-required-modal-title"
+        aria-describedby="auth-required-modal-description"
         onClick={(event) => event.stopPropagation()}
       >
         <h2 id="auth-required-modal-title">{title}</h2>
-        <p>{description}</p>
+        <p id="auth-required-modal-description">{description}</p>
 
         <div className="auth-required-modal-actions">
           {primaryLabel && (

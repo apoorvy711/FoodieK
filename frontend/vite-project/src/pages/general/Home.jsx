@@ -344,15 +344,6 @@ const Home = () => {
         notificationsCount={notificationsCount}
         onEditLocation={openLocationEditor}
       />
-      <h1
-        style={{
-          textAlign: "center",
-          color: "red",
-          margin: "10px 0",
-        }}
-      >
-        🚀 CI/CD TEST SUCCESS 🚀
-      </h1>
 
       <SearchBar onSearch={setSearchTerm} />
 

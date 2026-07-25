@@ -17,28 +17,18 @@ const ChooseRegister = () => {
             Pick how you want to join the platform.
           </p>
         </header>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <Link
-            to="/user/register"
-            className="auth-submit"
-            style={{ textDecoration: "none" }}
-          >
+        <div className="auth-chooser-actions">
+          <Link to="/user/register" className="auth-submit auth-link-button">
             Register as normal user
           </Link>
           <Link
             to="/food-partner/register"
-            className="auth-submit"
-            style={{
-              textDecoration: "none",
-              background: "var(--color-surface-alt)",
-              color: "var(--color-text)",
-              border: "1px solid var(--color-border)",
-            }}
+            className="auth-submit auth-link-button auth-link-button--secondary"
           >
             Register as food partner
           </Link>
         </div>
-        <div className="auth-alt-action" style={{ marginTop: "4px" }}>
+        <div className="auth-alt-action">
           Already have an account? <Link to="/user/login">Sign in</Link>
         </div>
       </div>
