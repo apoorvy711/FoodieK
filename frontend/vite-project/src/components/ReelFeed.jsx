@@ -49,7 +49,7 @@ const ReelFeed = ({
     videoRefs.current.forEach((video) => observer.observe(video));
 
     return () => observer.disconnect();
-  }, [items]);
+  }, [feedItems]);
 
   const setVideoRef = (id) => (el) => {
     if (!el) {

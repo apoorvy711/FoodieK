@@ -29,18 +29,33 @@ const ResilientVideo = forwardRef(function ResilientVideo(
 
   const [sourceIndex, setSourceIndex] = useState(0);
   const [fallbackMode, setFallbackMode] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     setSourceIndex(0);
     setFallbackMode(false);
+    setRetryCount(0);
   }, [src]);
 
   const currentSource = sourceCandidates[sourceIndex] || "";
   const currentPoster = posterCandidates[0] || defaultFallbackImage;
 
-  const handleError = () => {
+  const handleError = (event) => {
+    const mediaErrorCode = event.currentTarget?.error?.code;
+
+    // Ignore aborts triggered by source cancellation/navigation.
+    if (mediaErrorCode === 1) {
+      return;
+    }
+
     if (sourceIndex + 1 < sourceCandidates.length) {
       setSourceIndex((index) => index + 1);
+      return;
+    }
+
+    // Retry once for transient network/decode issues before falling back.
+    if ((mediaErrorCode === 2 || mediaErrorCode === 3) && retryCount < 1) {
+      setRetryCount((count) => count + 1);
       return;
     }
 
@@ -66,7 +81,7 @@ const ResilientVideo = forwardRef(function ResilientVideo(
   return (
     <video
       ref={ref}
-      key={currentSource}
+      key={`${currentSource}-${retryCount}`}
       src={currentSource}
       poster={currentPoster}
       className={className}
