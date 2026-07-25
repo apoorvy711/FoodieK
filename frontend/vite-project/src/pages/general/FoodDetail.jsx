@@ -8,9 +8,9 @@ import {
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import "../../styles/food-detail.css";
-import { resolveMediaUrl } from "../../utils/media";
 import AuthRequiredModal from "../../components/auth/AuthRequiredModal";
 import { useAuthRequiredModal } from "../../hooks/useAuthRequiredModal";
+import ResilientVideo from "../../components/media/ResilientVideo";
 
 const FoodDetail = () => {
   const { id } = useParams();
@@ -322,9 +322,10 @@ const FoodDetail = () => {
             className="food-detail-video-container"
             onClick={handleVideoClick}
           >
-            <video
+            <ResilientVideo
               ref={videoRef}
-              src={resolveMediaUrl(food.video)}
+              src={food.video}
+              poster={food.thumbnail || food.foodPartner?.avatar}
               autoPlay
               loop
               muted
@@ -471,11 +472,13 @@ const FoodDetail = () => {
               className="related-food-card"
               to={`/food/${item._id}`}
             >
-              <video
+              <ResilientVideo
                 src={item.video}
+                poster={item.thumbnail || item.foodPartner?.avatar}
                 className="related-food-video"
                 muted
                 playsInline
+                preload="metadata"
               />
               <div className="related-food-copy">
                 <strong>{item.name}</strong>

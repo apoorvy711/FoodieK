@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../api/api";
-import { resolveMediaUrl } from "../utils/media";
+import ResilientVideo from "./media/ResilientVideo";
 
 const ReelFeed = ({
   items = [],
@@ -134,13 +134,11 @@ const ReelFeed = ({
 
           return (
             <section key={item._id} className="reel" role="listitem">
-              <video
+              <ResilientVideo
                 ref={setVideoRef(item._id)}
                 className="reel-video"
-                src={resolveMediaUrl(item.video)}
-                poster={resolveMediaUrl(
-                  item.thumbnail || item.foodPartner?.avatar,
-                )}
+                src={item.video}
+                poster={item.thumbnail || item.foodPartner?.avatar}
                 muted
                 playsInline
                 loop
