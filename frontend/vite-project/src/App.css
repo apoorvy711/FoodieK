@@ -206,8 +206,16 @@ a:focus-visible {
   .theme-toggle {
     width: 2.75rem;
     height: 2.75rem;
-    top: 0.75rem;
+    top: auto;
     right: 0.75rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4.7rem);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .theme-toggle {
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
   }
 }
 

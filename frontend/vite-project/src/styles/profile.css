@@ -3,7 +3,7 @@
 /* Shared application shell: profile, cart, checkout, orders and notifications. */
 .profile-page {
   min-height: 100dvh;
-  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.875rem, 3vw, 2.25rem) 5.5rem;
+  padding: clamp(0.95rem, 2.4vw, 2.25rem) clamp(0.875rem, 3vw, 2.25rem) 6.6rem;
   color: #172033;
   background:
     radial-gradient(
@@ -134,12 +134,12 @@
 
 .profile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
 }
 .profile-grid--compact {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 .profile-tile {
   display: flex;
@@ -580,7 +580,7 @@
 
 @media (max-width: 760px) {
   .profile-page {
-    padding-bottom: 5.5rem;
+    padding-bottom: 7rem;
   }
 
   .profile-page > * + * {
@@ -603,7 +603,7 @@
 
 @media (max-width: 460px) {
   .profile-header {
-    padding: 1rem;
+    padding: 0.95rem;
   }
   .profile-meta {
     align-items: flex-start;
@@ -616,7 +616,8 @@
     grid-template-columns: 1fr;
   }
   .profile-tile {
-    min-height: 76px;
+    min-height: 72px;
+    padding: 15px;
   }
   .checkout-card {
     align-items: flex-start;
@@ -632,5 +633,9 @@
   }
   .profile-actions button {
     width: 100%;
+  }
+
+  .profile-business {
+    font-size: clamp(1.18rem, 5.2vw, 1.4rem);
   }
 }

@@ -151,7 +151,7 @@
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(15, 23, 42, 0.58);
+  background: rgba(2, 6, 23, 0.72);
 }
 
 .auth-required-modal {
@@ -160,7 +160,7 @@
   border-radius: 16px;
   padding: 1.25rem;
   background: #fff;
-  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.22);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.34);
 }
 
 .auth-required-modal h2 {
@@ -262,4 +262,9 @@
 :root[data-theme="dark"] .profile-logout-btn {
   border-color: var(--color-border);
   background: var(--color-surface-alt);
+}
+
+:root[data-theme="dark"] .auth-required-modal-btn--secondary,
+:root[data-theme="dark"] .auth-required-modal-btn--ghost {
+  color: var(--color-text);
 }
