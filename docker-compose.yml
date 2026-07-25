@@ -18,7 +18,7 @@ services:
     container_name: foodiek-frontend-compose
 
     ports:
-      - "5173:5173"
+      - "80:80"
 
     depends_on:
       - backend
