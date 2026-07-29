@@ -1,5 +1,5 @@
 const Category = require("../models/category.model");
-
+const redisClient = require("../config/redis");
 // Create Category
 exports.createCategory = async (req, res) => {
   try {
@@ -30,6 +30,8 @@ exports.createCategory = async (req, res) => {
       slug,
       image,
     });
+    await redisClient.del("categories");
+    console.log("🗑️ Categories Cache Cleared");
 
     res.status(201).json({
       success: true,
@@ -47,17 +49,44 @@ exports.createCategory = async (req, res) => {
 // Get All Categories
 exports.getCategories = async (req, res) => {
   try {
+    const CACHE_KEY = "categories";
+
+    // 1. Check Redis
+    const cachedCategories = await redisClient.get(CACHE_KEY);
+
+    if (cachedCategories) {
+      console.log("✅ Cache Hit");
+
+      const parsedCategories = JSON.parse(cachedCategories);
+
+      return res.status(200).json({
+        success: true,
+        source: "redis",
+        count: parsedCategories.length,
+        categories: parsedCategories,
+      });
+    }
+
+    console.log("❌ Cache Miss");
+
+    // 2. Fetch from MongoDB
     const categories = await Category.find({
       isActive: true,
     }).sort({ name: 1 });
 
-    res.status(200).json({
+    // 3. Store in Redis for 1 hour
+    await redisClient.set(CACHE_KEY, JSON.stringify(categories), {
+      EX: 3600,
+    });
+
+    return res.status(200).json({
       success: true,
+      source: "mongodb",
       count: categories.length,
       categories,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -110,6 +139,8 @@ exports.updateCategory = async (req, res) => {
         new: true,
       },
     );
+    await redisClient.del("categories");
+    console.log("🗑️ Categories Cache Cleared");
 
     if (!category) {
       return res.status(404).json({
@@ -135,7 +166,8 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
-
+    await redisClient.del("categories");
+    console.log("🗑️ Categories Cache Cleared");
     if (!category) {
       return res.status(404).json({
         success: false,

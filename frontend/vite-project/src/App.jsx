@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+
 import "./styles/theme.css";
 import "./App.css";
 import "./styles/profile.css";
 import { Toaster } from "react-hot-toast";
 
 import AppRoutes from "./routes/AppRoutes";
-
+import SocketListener from "./components/SocketListener";
 function App() {
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") {
@@ -23,6 +24,7 @@ function App() {
       : "light";
   });
 
+  // Theme Management
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute("data-theme", theme);
@@ -44,6 +46,7 @@ function App() {
       >
         {theme === "dark" ? "☀️" : "🌙"}
       </button>
+
       <Toaster
         position="top-center"
         reverseOrder={false}
@@ -69,6 +72,9 @@ function App() {
           },
         }}
       />
+
+      <SocketListener />
+
       <AppRoutes />
     </>
   );

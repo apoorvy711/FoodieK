@@ -20,6 +20,22 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  useEffect(() => {
+    const handleOrderStatusUpdate = () => {
+      console.log("🔄 Order status changed. Refreshing orders...");
+      fetchOrders();
+    };
+
+    window.addEventListener("order-status-updated", handleOrderStatusUpdate);
+
+    return () => {
+      window.removeEventListener(
+        "order-status-updated",
+        handleOrderStatusUpdate,
+      );
+    };
+  }, []);
+
   return (
     <div className="profile-page">
       <section className="profile-header">

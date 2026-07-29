@@ -18,6 +18,7 @@
   "dependencies": {
     "@imagekit/nodejs": "^7.9.1",
     "bcryptjs": "^3.0.3",
+    "cookie": "^2.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -31,6 +32,8 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.4",
     "multer": "^2.2.0",
+    "redis": "^6.1.0",
+    "socket.io": "^4.8.3",
     "uuid": "^14.0.1"
   },
   "devDependencies": {

@@ -258,6 +258,7 @@ async function updateOrderStatus(req, res) {
     }
 
     order.status = status;
+
     order.statusHistory.push({
       status,
       note,
@@ -270,12 +271,17 @@ async function updateOrderStatus(req, res) {
 
     await order.save();
 
+    // Creates notification in DB + automatically emits Socket.IO
     await notificationService.createUserNotification({
       userId: order.user,
-      title: "Order status updated",
-      message: `Order ${order._id.toString().slice(-6)} is now ${status}.`,
+      title: "Order Status Updated",
+      message: `Your order is now ${status}.`,
       type: "order",
       link: "/orders",
+      data: {
+        orderId: order._id,
+        status: order.status,
+      },
     });
 
     return res.status(200).json({

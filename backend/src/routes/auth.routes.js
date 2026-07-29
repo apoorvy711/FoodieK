@@ -1,11 +1,11 @@
 const express = require("express");
 const authController = require("../controllers/auth.controllers");
-
 const router = express.Router();
 
 const authMiddleware = require("../middlewares/auth.middleware");
 const validationMiddleware = require("../middlewares/validation.middleware");
 const authValidator = require("../validators/auth.validator");
+const rateLimiter = require("../middlewares/rateLimiter.middleware");
 
 //USER AUTH APIs
 router.post(
@@ -16,6 +16,7 @@ router.post(
 );
 router.post(
   "/user/login",
+  rateLimiter,
   authValidator.loginUserValidation,
   validationMiddleware.validateRequest,
   authController.loginUser,
@@ -36,6 +37,7 @@ router.post(
 );
 router.post(
   "/food-partner/login",
+  rateLimiter,
   authValidator.loginFoodPartnerValidation,
   validationMiddleware.validateRequest,
   authController.loginFoodPartner,

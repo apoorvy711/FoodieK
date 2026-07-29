@@ -22,9 +22,75 @@ const ReelFeed = ({
   const [commentText, setCommentText] = useState("");
   const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
 
+  // ADD THIS BELOW THIS EXISTING useEffect
+
   useEffect(() => {
     setFeedItems(items);
   }, [items]);
+
+  // ===============================
+  // LIVE LIKES
+  // ===============================
+  useEffect(() => {
+    const handleCommentAdded = (event) => {
+      const { foodId, comment } = event.detail;
+
+      // Update comment count
+      setFeedItems((current) =>
+        current.map((food) =>
+          String(food._id) === String(foodId)
+            ? {
+                ...food,
+                commentsCount: (food.commentsCount || 0) + 1,
+              }
+            : food,
+        ),
+      );
+
+      // If comment modal is open for this food,
+      // append the new comment instantly.
+      if (commentFood && String(commentFood._id) === String(foodId)) {
+        setComments((current) => {
+          if (current.some((c) => c._id === comment._id)) {
+            return current;
+          }
+
+          return [comment, ...current];
+        });
+      }
+    };
+
+    window.addEventListener("comment-added", handleCommentAdded);
+
+    return () => {
+      window.removeEventListener("comment-added", handleCommentAdded);
+    };
+  }, [commentFood]);
+
+  useEffect(() => {
+    const handleFoodLiked = (event) => {
+      const { foodId, likeCount } = event.detail;
+
+      console.log("Socket Food:", foodId);
+
+      setFeedItems((current) =>
+        current.map((food) =>
+          String(food._id) === String(foodId)
+            ? {
+                ...food,
+                likeCount,
+              }
+            : food,
+        ),
+      );
+    };
+
+    window.addEventListener("food-liked", handleFoodLiked);
+
+    return () => {
+      window.removeEventListener("food-liked", handleFoodLiked);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -127,6 +193,8 @@ const ReelFeed = ({
         )}
 
         {feedItems.map((item) => {
+          console.log("Render:", item.name, item.likeCount);
+
           const partnerId =
             typeof item.foodPartner === "string"
               ? item.foodPartner

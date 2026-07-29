@@ -1,3 +1,4 @@
+const redisClient = require("../config/redis");
 const mongoose = require("mongoose");
 const path = require("path");
 const foodModel = require("../models/food.model");
@@ -6,6 +7,19 @@ const saveModel = require("../models/save.model");
 const storageService = require("../services/storage.services");
 const thumbnailService = require("../services/video-thumbnail.service");
 const { v4: uuid } = require("uuid");
+const { getIO } = require("../sockets/socketManager");
+async function clearFoodCache() {
+  try {
+    const keys = await redisClient.keys("foods:*");
+
+    if (keys.length > 0) {
+      await redisClient.del(keys);
+      console.log(`🗑️ Cleared ${keys.length} Food Cache Keys`);
+    }
+  } catch (error) {
+    console.error("Redis Cache Clear Error:", error.message);
+  }
+}
 
 // ======================================================
 // CREATE FOOD
@@ -26,7 +40,11 @@ async function createFood(req, res) {
       tags,
       isAvailable,
     } = req.body;
-
+    console.log("========== CREATE FOOD ==========");
+    console.log("req.file:", req.file);
+    console.log("req.body:", req.body);
+    console.log("Content-Type:", req.headers["content-type"]);
+    console.log("===============================");
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -95,7 +113,7 @@ async function createFood(req, res) {
 
       isAvailable: isAvailable === undefined ? true : isAvailable === "true",
     });
-
+    await clearFoodCache();
     return res.status(201).json({
       success: true,
       message: "Food uploaded successfully.",
@@ -151,7 +169,20 @@ async function getFoodItems(req, res) {
       Math.max(1, Number.parseInt(limit, 10) || 30),
     );
     const safePage = Math.max(1, Number.parseInt(page, 10) || 1);
+    const CACHE_KEY =
+      `foods:category=${category}` +
+      `:search=${search}` +
+      `:page=${safePage}` +
+      `:limit=${safeLimit}`;
+    const cachedFoods = await redisClient.get(CACHE_KEY);
 
+    if (cachedFoods) {
+      console.log("✅ Food Cache Hit");
+
+      return res.status(200).json(JSON.parse(cachedFoods));
+    }
+
+    console.log("❌ Food Cache Miss");
     const foodItems = await foodModel
       .find(filter)
       .populate("category")
@@ -164,14 +195,20 @@ async function getFoodItems(req, res) {
 
     const total = await foodModel.countDocuments(filter);
 
-    return res.status(200).json({
+    const response = {
       success: true,
       count: foodItems.length,
       total,
       page: safePage,
       pages: Math.max(1, Math.ceil(total / safeLimit)),
       foodItems,
+    };
+
+    await redisClient.set(CACHE_KEY, JSON.stringify(response), {
+      EX: 600,
     });
+
+    return res.status(200).json(response);
   } catch (error) {
     console.error(error);
 
@@ -189,6 +226,7 @@ async function getFoodItems(req, res) {
 async function getFoodById(req, res) {
   try {
     const { id } = req.params;
+    const CACHE_KEY = `food:${id}`;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
@@ -196,6 +234,20 @@ async function getFoodById(req, res) {
         message: "Food not found",
       });
     }
+
+    const cachedFood = await redisClient.get(CACHE_KEY);
+
+    if (cachedFood) {
+      console.log("✅ Food Details Cache Hit");
+
+      const response = JSON.parse(cachedFood);
+
+      response.source = "redis";
+
+      return res.status(200).json(response);
+    }
+
+    console.log("❌ Food Details Cache Miss");
 
     const food = await foodModel
       .findById(id)
@@ -209,12 +261,6 @@ async function getFoodById(req, res) {
       });
     }
 
-    await foodModel.findByIdAndUpdate(id, {
-      $inc: {
-        viewCount: 1,
-      },
-    });
-
     const relatedFoods = await foodModel
       .find({
         _id: {
@@ -227,11 +273,18 @@ async function getFoodById(req, res) {
       .populate("category")
       .populate("foodPartner", "name address contactName phone");
 
-    return res.status(200).json({
+    const response = {
       success: true,
+      source: "mongodb",
       food,
       relatedFoods,
+    };
+
+    await redisClient.set(CACHE_KEY, JSON.stringify(response), {
+      EX: 600,
     });
+
+    return res.status(200).json(response);
   } catch (error) {
     console.error(error);
 
@@ -344,6 +397,9 @@ async function likeFood(req, res) {
       food: foodId,
     });
 
+    // ===============================
+    // UNLIKE
+    // ===============================
     if (existingLike) {
       await likeModel.deleteOne({
         _id: existingLike._id,
@@ -357,14 +413,24 @@ async function likeFood(req, res) {
 
       const updatedFood = await foodModel.findById(foodId);
 
+      const io = getIO();
+
+      io.emit("food-liked", {
+        foodId,
+        likeCount: updatedFood.likeCount,
+      });
+
       return res.status(200).json({
         success: true,
-        liked: true,
+        liked: false,
         likeCount: updatedFood.likeCount,
-        message: "Food liked successfully.",
+        message: "Food unliked successfully.",
       });
     }
 
+    // ===============================
+    // LIKE
+    // ===============================
     await likeModel.create({
       user: req.user._id,
       food: foodId,
@@ -376,9 +442,19 @@ async function likeFood(req, res) {
       },
     });
 
+    const updatedFood = await foodModel.findById(foodId);
+
+    const io = getIO();
+
+    io.emit("food-liked", {
+      foodId,
+      likeCount: updatedFood.likeCount,
+    });
+
     return res.status(200).json({
       success: true,
       liked: true,
+      likeCount: updatedFood.likeCount,
       message: "Food liked successfully.",
     });
   } catch (error) {

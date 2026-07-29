@@ -23,8 +23,11 @@ const UserLogin = () => {
         password,
       });
 
+      // Refresh authentication state after successful login
       await refreshAuth();
+
       toast.success(response.data.message || "Signed in successfully");
+
       navigate(redirectTo, { replace: true });
     } catch (error) {
       const message = error?.response?.data?.message || "Login failed";
@@ -47,6 +50,7 @@ const UserLogin = () => {
             Sign in to continue your food journey.
           </p>
         </header>
+
         <form
           className="auth-form"
           onSubmit={handleSubmit}
@@ -66,6 +70,7 @@ const UserLogin = () => {
               spellCheck={false}
             />
           </div>
+
           <div className="field-group">
             <label htmlFor="password">Password</label>
             <input
@@ -76,10 +81,12 @@ const UserLogin = () => {
               autoComplete="new-password"
             />
           </div>
+
           <button className="auth-submit" type="submit">
             Sign In
           </button>
         </form>
+
         <div className="auth-alt-action">
           New here? <Link to="/user/register">Create account</Link>
         </div>

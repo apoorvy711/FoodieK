@@ -1,5 +1,6 @@
 const commentModel = require("../models/comment.model");
 const foodModel = require("../models/food.model");
+const { getIO } = require("../sockets/socketManager");
 
 async function createComment(req, res) {
   try {
@@ -28,12 +29,24 @@ async function createComment(req, res) {
     });
 
     await foodModel.findByIdAndUpdate(foodId, {
-      $inc: { commentsCount: 1 },
+      $inc: {
+        commentsCount: 1,
+      },
     });
 
     const populatedComment = await commentModel
       .findById(comment._id)
       .populate("user", "fullName email");
+
+    // ==========================
+    // SOCKET EVENT
+    // ==========================
+    const io = getIO();
+
+    io.emit("comment-added", {
+      foodId,
+      comment: populatedComment,
+    });
 
     res.status(201).json({
       success: true,
