@@ -25,7 +25,19 @@ const paymentTransactionSchema = new mongoose.Schema(
       type: String,
       default: "mock",
     },
+    providerOrderId: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     providerPaymentId: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    providerSignature: {
       type: String,
       default: "",
       trim: true,
@@ -46,6 +58,7 @@ const paymentTransactionSchema = new mongoose.Schema(
 );
 
 paymentTransactionSchema.index({ order: 1, createdAt: -1 });
+paymentTransactionSchema.index({ providerOrderId: 1 });
 paymentTransactionSchema.index({ providerPaymentId: 1 });
 
 module.exports = mongoose.model("paymenttransaction", paymentTransactionSchema);

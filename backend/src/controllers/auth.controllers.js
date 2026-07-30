@@ -2,6 +2,9 @@ const userModel = require("../models/user.model");
 const foodPartnerModel = require("../models/foodpartner.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const emailService = require("../services/email.service");
+const crypto = require("crypto");
+const emailQueueService = require("../services/emailQueue.service");
 
 function buildCookieOptions() {
   const isProduction = process.env.NODE_ENV === "production";
@@ -17,9 +20,7 @@ function buildCookieOptions() {
 async function registerUser(req, res) {
   const { fullName, email, password } = req.body;
 
-  const isUserAlreadyExists = await userModel.findOne({
-    email,
-  });
+  const isUserAlreadyExists = await userModel.findOne({ email });
 
   if (isUserAlreadyExists) {
     return res.status(400).json({
@@ -35,6 +36,9 @@ async function registerUser(req, res) {
     password: hashedPassword,
   });
 
+  // Queue Welcome Email
+  await emailQueueService.addCustomerWelcomeEmail(user);
+
   const token = jwt.sign(
     {
       id: user._id,
@@ -45,7 +49,7 @@ async function registerUser(req, res) {
 
   res.cookie("token", token, buildCookieOptions());
 
-  res.status(201).json({
+  return res.status(201).json({
     message: "User registered successfully",
     user: {
       _id: user._id,
@@ -54,6 +58,98 @@ async function registerUser(req, res) {
       role: user.role || "user",
     },
   });
+}
+
+async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+    await user.save();
+    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
+
+    await emailQueueService.addForgotPasswordEmail({
+      name: user.fullName,
+      email: user.email,
+      resetLink,
+    });
+
+    console.log("Reset Token:", resetToken);
+
+    return res.status(200).json({
+      message: "User found",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+
+async function resetPassword(req, res) {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({
+        message: "Token and password are required",
+      });
+    }
+
+    const user = await userModel.findOne({
+      resetPasswordToken: token,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid reset token",
+      });
+    }
+
+    if (user.resetPasswordExpires < Date.now()) {
+      return res.status(400).json({
+        message: "Reset link has expired",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
 }
 
 async function getCurrentUser(req, res) {
@@ -255,4 +351,6 @@ module.exports = {
   loginFoodPartner,
   logoutFoodPartner,
   getCurrentFoodPartner,
+  forgotPassword,
+  resetPassword,
 };

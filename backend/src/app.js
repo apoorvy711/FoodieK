@@ -54,7 +54,15 @@ app.use(
   }),
 );
 
-app.use(express.json());
+app.use(
+  express.json({
+    verify(req, res, buf) {
+      if (req.originalUrl === "/api/payments/webhook") {
+        req.rawBody = buf.toString();
+      }
+    },
+  }),
+);
 app.use(cookieParser());
 app.use("/api", securityMiddleware.apiLimiter);
 app.use("/api/auth", securityMiddleware.authLimiter);

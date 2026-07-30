@@ -24,6 +24,7 @@ import {
   CustomerProtectedRoute,
   FoodPartnerProtectedRoute,
 } from "../components/auth/ProtectedRoute";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path="/register" element={<ChooseRegister />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/login" element={<UserLogin />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/food-partner/register"
             element={<FoodPartnerRegister />}

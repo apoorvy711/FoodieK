@@ -1,8 +1,13 @@
 require("dotenv").config();
-
+console.log("Before require");
+const worker = require("./src/workers/email.worker");
+console.log("After require");
+console.log(worker);
 const http = require("http");
-
 const app = require("./src/app");
+const bullBoard = require("./src/bullboard/bullBoard");
+
+app.use("/admin/queues", bullBoard.getRouter());
 const connectDB = require("./src/db/db");
 const redisClient = require("./src/config/redis");
 

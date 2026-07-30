@@ -14,6 +14,11 @@ router.post(
   validationMiddleware.validateRequest,
   authController.registerUser,
 );
+
+router.post("/user/forgot-password", authController.forgotPassword);
+
+router.post("/user/reset-password", authController.resetPassword);
+
 router.post(
   "/user/login",
   rateLimiter,
@@ -21,7 +26,9 @@ router.post(
   validationMiddleware.validateRequest,
   authController.loginUser,
 );
+
 router.get("/user/logout", authController.logoutUser);
+
 router.get(
   "/user/me",
   authMiddleware.authUserMiddleware,
@@ -35,6 +42,7 @@ router.post(
   validationMiddleware.validateRequest,
   authController.registerFoodPartner,
 );
+
 router.post(
   "/food-partner/login",
   rateLimiter,
@@ -42,11 +50,21 @@ router.post(
   validationMiddleware.validateRequest,
   authController.loginFoodPartner,
 );
+
 router.get("/food-partner/logout", authController.logoutFoodPartner);
+
 router.get(
   "/food-partner/me",
   authMiddleware.authFoodPartnerMiddleware,
   authController.getCurrentFoodPartner,
 );
+
+router.get("/me", authMiddleware.authUserMiddleware, (req, res) => {
+  return res.json({
+    id: req.user._id,
+    email: req.user.email,
+    name: req.user.fullName || req.user.name,
+  });
+});
 
 module.exports = router;

@@ -10,6 +10,12 @@ router.post(
   paymentController.createPaymentIntent,
 );
 
+router.post(
+  "/verify",
+  authMiddleware.authUserMiddleware,
+  paymentController.verifyPayment,
+);
+
 router.post("/webhook", paymentController.handleWebhook);
 
 module.exports = router;
