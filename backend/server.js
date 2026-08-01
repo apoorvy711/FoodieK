@@ -16,22 +16,24 @@ const initializeNotificationListener = require("./src/listeners/notification.lis
 
 async function startServer() {
   try {
-    // Connect Database
+    // Connect MongoDB
     await connectDB();
 
     // Connect Redis
-    await redisClient.connect();
+    if (!redisClient.isOpen) {
+      await redisClient.connect();
+    }
 
     console.log("🚀 Initializing Notification Listener...");
     initializeNotificationListener();
 
-    // Create HTTP Server
+    // Create HTTP server
     const server = http.createServer(app);
 
     // Initialize Socket.IO
     initializeSocket(server);
 
-    // Start Server
+    // Start Express
     server.listen(3000, () => {
       console.log("=================================");
       console.log("🚀 Server is running on port 3000");

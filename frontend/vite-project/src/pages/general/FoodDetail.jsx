@@ -11,6 +11,7 @@ import "../../styles/food-detail.css";
 import AuthRequiredModal from "../../components/auth/AuthRequiredModal";
 import { useAuthRequiredModal } from "../../hooks/useAuthRequiredModal";
 import ResilientVideo from "../../components/media/ResilientVideo";
+import BackButton from "../../components/navigation/BackButton";
 
 const FoodDetail = () => {
   const { id } = useParams();
@@ -312,9 +313,9 @@ const FoodDetail = () => {
 
   return (
     <div className="food-detail-page">
-      <Link className="food-detail-back" to="/">
-        ← Back to feed
-      </Link>
+      <div className="food-detail-back">
+        <BackButton label="Back to feed" />
+      </div>
 
       <div className="food-detail-card">
         <div className="food-detail-media">

@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { useEffect } from "react";
 import UserRegister from "../pages/auth/UserRegister";
 import ChooseRegister from "../pages/auth/ChooseRegister";
 import UserLogin from "../pages/auth/UserLogin";
@@ -26,10 +32,74 @@ import {
 } from "../components/auth/ProtectedRoute";
 import ResetPassword from "../pages/auth/ResetPassword";
 
+const titleMap = [
+  {
+    matcher: (pathname) => pathname === "/",
+    title: "FoodieK | Discover Amazing Food",
+  },
+  {
+    matcher: (pathname) => pathname.startsWith("/food/"),
+    title: "Food Details | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname.startsWith("/food-partner/"),
+    title: "Restaurant Profile | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/saved",
+    title: "Saved Dishes | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/orders",
+    title: "My Orders | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/checkout",
+    title: "Checkout | FoodieK",
+  },
+  { matcher: (pathname) => pathname === "/cart", title: "Cart | FoodieK" },
+  {
+    matcher: (pathname) => pathname === "/notifications",
+    title: "Notifications | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/profile",
+    title: "Profile | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname.includes("login"),
+    title: "Sign In | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname.includes("register"),
+    title: "Register | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/reset-password",
+    title: "Reset Password | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/admin",
+    title: "Admin Dashboard | FoodieK",
+  },
+];
+
+const RouteMeta = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const match = titleMap.find((entry) => entry.matcher(pathname));
+    document.title = match?.title || "FoodieK | Discover Amazing Food";
+  }, [pathname]);
+
+  return null;
+};
+
 const AppRoutes = () => {
   return (
     <Router>
       <AuthProvider>
+        <RouteMeta />
         <Routes>
           <Route path="/register" element={<ChooseRegister />} />
           <Route path="/user/register" element={<UserRegister />} />

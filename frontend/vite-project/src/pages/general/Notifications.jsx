@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 import toast from "react-hot-toast";
+import BackButton from "../../components/navigation/BackButton";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -64,14 +65,17 @@ const Notifications = () => {
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div>
-          <h1 className="profile-business">Notifications</h1>
-          <p className="profile-address">
-            Stay up to date with orders, saves and reactions.
-          </p>
-          <p className="profile-address">
-            Live updates: {streamConnected ? "Connected" : "Reconnecting"}
-          </p>
+        <div className="page-top-row">
+          <BackButton />
+          <div>
+            <h1 className="profile-business">Notifications</h1>
+            <p className="profile-address">
+              Stay up to date with orders, saves and reactions.
+            </p>
+            <p className="profile-address">
+              Live updates: {streamConnected ? "Connected" : "Reconnecting"}
+            </p>
+          </div>
         </div>
         <button
           type="button"

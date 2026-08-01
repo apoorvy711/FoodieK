@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -50,9 +51,12 @@ const Dashboard = () => {
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div>
-          <h1 className="profile-business">Admin Dashboard</h1>
-          <p className="profile-address">Moderation and platform overview</p>
+        <div className="page-top-row">
+          <BackButton />
+          <div>
+            <h1 className="profile-business">Admin Dashboard</h1>
+            <p className="profile-address">Moderation and platform overview</p>
+          </div>
         </div>
       </section>
 

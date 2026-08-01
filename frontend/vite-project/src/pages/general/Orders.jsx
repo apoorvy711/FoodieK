@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -39,11 +40,14 @@ const Orders = () => {
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div>
-          <h1 className="profile-business">Order history</h1>
-          <p className="profile-address">
-            Track your recent food orders and delivery status.
-          </p>
+        <div className="page-top-row">
+          <BackButton />
+          <div>
+            <h1 className="profile-business">Order history</h1>
+            <p className="profile-address">
+              Track your recent food orders and delivery status.
+            </p>
+          </div>
         </div>
         <button type="button" className="btn-secondary" onClick={fetchOrders}>
           Retry

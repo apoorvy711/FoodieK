@@ -71,7 +71,10 @@ a:focus-visible {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-danger,
+.btn-success,
+.btn-outlined {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -109,21 +112,99 @@ a:focus-visible {
   background: #fff;
 }
 
+.btn-danger {
+  color: #fff;
+  background: #dc2626;
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.2);
+}
+
+.btn-success {
+  color: #fff;
+  background: #16a34a;
+  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.2);
+}
+
+.btn-outlined {
+  color: #1e293b;
+  border-color: #cbd5e1;
+  background: transparent;
+}
+
 .btn-secondary:hover {
   color: #172033;
   border-color: #cbd5e1;
   background: #f8fafc;
 }
 
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-outlined:hover {
+  border-color: #94a3b8;
+  background: rgba(148, 163, 184, 0.1);
+}
+
 .btn-primary:active,
-.btn-secondary:active {
+.btn-secondary:active,
+.btn-danger:active,
+.btn-success:active,
+.btn-outlined:active {
   transform: translateY(1px);
 }
 
 .btn-primary:disabled,
-.btn-secondary:disabled {
+.btn-secondary:disabled,
+.btn-danger:disabled,
+.btn-success:disabled,
+.btn-outlined:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.is-loading {
+  cursor: wait;
+}
+
+.page-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.app-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 42px;
+  min-width: 44px;
+  border: 1px solid #dbe3ed;
+  border-radius: 11px;
+  padding: 0.58rem 0.85rem;
+  color: #334155;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.app-back-button:hover {
+  border-color: #fdba74;
+  color: #c2410c;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
 }
 
 .glass-card {
@@ -186,29 +267,101 @@ a:focus-visible {
   top: 1rem;
   right: 1rem;
   z-index: 2000;
-  display: inline-flex;
+  display: inline-grid;
   align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
+  justify-items: start;
+  width: 3.55rem;
+  height: 2rem;
+  padding: 3px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface) 90%, #0f172a 10%);
   box-shadow: var(--shadow-md);
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
 }
 
 .theme-toggle:hover {
   transform: translateY(-1px);
 }
 
+.theme-toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(148, 163, 184, 0.26),
+    rgba(148, 163, 184, 0.08)
+  );
+}
+
+.theme-toggle-thumb {
+  position: relative;
+  z-index: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: #fff;
+  color: #f59e0b;
+  display: grid;
+  place-items: center;
+  transform: translateX(0);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+:root[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(1.52rem);
+  background: #0f172a;
+  color: #93c5fd;
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+.loading-screen {
+  width: min(100%, 1020px);
+  margin-inline: auto;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  display: grid;
+  gap: 0.8rem;
+  justify-items: center;
+}
+
+@media (max-width: 768px) {
+  .page-top-row {
+    align-items: stretch;
+  }
+
+  .app-back-button {
+    width: fit-content;
+  }
+}
+
 @media (max-width: 640px) {
   .theme-toggle {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3.3rem;
+    height: 1.95rem;
     top: auto;
     right: 0.75rem;
     bottom: calc(env(safe-area-inset-bottom, 0px) + 4.7rem);
+  }
+
+  :root[data-theme="dark"] .theme-toggle-thumb {
+    transform: translateX(1.3rem);
   }
 }
 

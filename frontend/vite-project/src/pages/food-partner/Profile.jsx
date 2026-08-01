@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { resolveMediaUrl } from "../../utils/media";
+import BackButton from "../../components/navigation/BackButton";
 
 const Profile = () => {
   const { id } = useParams();
@@ -62,6 +63,9 @@ const Profile = () => {
   return (
     <main className="profile-page">
       <section className="profile-header">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div
           className="cover-banner"
           style={

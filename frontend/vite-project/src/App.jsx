@@ -42,9 +42,16 @@ function App() {
         type="button"
         className="theme-toggle"
         onClick={toggleTheme}
+        role="switch"
+        aria-checked={theme === "dark"}
         aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
-        {theme === "dark" ? "☀️" : "🌙"}
+        <span className="theme-toggle-track" aria-hidden="true" />
+        <span className="theme-toggle-thumb" aria-hidden="true">
+          <span className="theme-toggle-icon">
+            {theme === "dark" ? "🌙" : "☀"}
+          </span>
+        </span>
       </button>
 
       <Toaster

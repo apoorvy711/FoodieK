@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { useAuth } from "../../auth/AuthContext";
+import BackButton from "../../components/navigation/BackButton";
 
 const UserRegister = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const UserRegister = () => {
         role="region"
         aria-labelledby="user-register-title"
       >
+        <BackButton />
         <header>
           <h1 id="user-register-title" className="auth-title">
             Create your account

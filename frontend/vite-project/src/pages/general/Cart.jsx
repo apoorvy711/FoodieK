@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 
 const Cart = () => {
   const [cart, setCart] = useState({ items: [], totalAmount: 0 });
@@ -35,9 +36,14 @@ const Cart = () => {
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div>
-          <h1 className="profile-business">Your cart</h1>
-          <p className="profile-address">Review your orders before checkout.</p>
+        <div className="page-top-row">
+          <BackButton />
+          <div>
+            <h1 className="profile-business">Your cart</h1>
+            <p className="profile-address">
+              Review your orders before checkout.
+            </p>
+          </div>
         </div>
       </section>
 

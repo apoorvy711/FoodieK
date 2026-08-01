@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { useAuth } from "../../auth/AuthContext";
+import BackButton from "../../components/navigation/BackButton";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const UserLogin = () => {
         role="region"
         aria-labelledby="user-login-title"
       >
+        <BackButton />
         <header>
           <h1 id="user-login-title" className="auth-title">
             Welcome back

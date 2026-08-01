@@ -3,6 +3,7 @@ import "../../styles/auth-shared.css";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { useAuth } from "../../auth/AuthContext";
+import BackButton from "../../components/navigation/BackButton";
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const FoodPartnerRegister = () => {
         role="region"
         aria-labelledby="partner-register-title"
       >
+        <BackButton />
         <header>
           <h1 id="partner-register-title" className="auth-title">
             Register your kitchen

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 
 function loadRazorpayCheckoutScript() {
   return new Promise((resolve) => {
@@ -155,11 +156,14 @@ const Checkout = () => {
   return (
     <div className="profile-page">
       <section className="profile-header">
-        <div>
-          <h1 className="profile-business">Checkout</h1>
-          <p className="profile-address">
-            Complete your order with a delivery address and payment method.
-          </p>
+        <div className="page-top-row">
+          <BackButton />
+          <div>
+            <h1 className="profile-business">Checkout</h1>
+            <p className="profile-address">
+              Complete your order with a delivery address and payment method.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -193,7 +197,12 @@ const Checkout = () => {
           <strong>₹{cart.totalAmount || 0}</strong>
         </div>
 
-        <button type="submit" className="btn-primary" disabled={submitting}>
+        <button
+          type="submit"
+          className={`btn-primary ${submitting ? "is-loading" : ""}`}
+          disabled={submitting}
+          aria-busy={submitting}
+        >
           {submitting
             ? "Processing..."
             : paymentMethod === "cash"

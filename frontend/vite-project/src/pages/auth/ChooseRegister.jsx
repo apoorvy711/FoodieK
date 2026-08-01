@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "../../styles/auth-shared.css";
+import BackButton from "../../components/navigation/BackButton";
 
 const ChooseRegister = () => {
   return (
@@ -9,6 +10,7 @@ const ChooseRegister = () => {
         role="region"
         aria-labelledby="choose-register-title"
       >
+        <BackButton />
         <header>
           <h1 id="choose-register-title" className="auth-title">
             Register

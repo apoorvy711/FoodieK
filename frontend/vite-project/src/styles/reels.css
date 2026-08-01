@@ -17,6 +17,8 @@
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+  touch-action: pan-y;
   padding-top: clamp(5.3rem, 9vw, 6.25rem);
 }
 
@@ -345,6 +347,8 @@
 .feed-comment-list {
   min-height: 110px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .feed-comment-item {

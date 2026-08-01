@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 import "../../styles/profile.css";
 
 const Account = () => {
@@ -46,6 +47,9 @@ const Account = () => {
   return (
     <main className="profile-page">
       <section className="profile-header">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div className="profile-meta">
           <div className="profile-info">
             <h1 className="profile-business">

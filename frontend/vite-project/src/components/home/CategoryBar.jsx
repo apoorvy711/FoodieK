@@ -2,11 +2,17 @@ import "./home.css";
 
 const CategoryBar = ({ categories, selectedCategory, setSelectedCategory }) => {
   return (
-    <div className="category-container">
+    <div
+      className="category-container"
+      role="tablist"
+      aria-label="Food categories"
+    >
       <button
         className={`category-chip ${
           selectedCategory === "" ? "active-category" : ""
         }`}
+        role="tab"
+        aria-selected={selectedCategory === ""}
         onClick={() => setSelectedCategory("")}
       >
         All
@@ -18,6 +24,8 @@ const CategoryBar = ({ categories, selectedCategory, setSelectedCategory }) => {
           className={`category-chip ${
             selectedCategory === category._id ? "active-category" : ""
           }`}
+          role="tab"
+          aria-selected={selectedCategory === category._id}
           onClick={() => setSelectedCategory(category._id)}
         >
           {category.name}

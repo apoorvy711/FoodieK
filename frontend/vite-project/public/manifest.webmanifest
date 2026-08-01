@@ -1,0 +1,17 @@
+{
+  "name": "FoodieK",
+  "short_name": "FoodieK",
+  "description": "Discover amazing food and restaurants through immersive short videos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7ed",
+  "theme_color": "#ea580c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

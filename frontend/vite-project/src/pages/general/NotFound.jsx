@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import BackButton from "../../components/navigation/BackButton";
 
 const NotFound = () => {
   return (
@@ -11,13 +12,7 @@ const NotFound = () => {
           <Link to="/" className="btn-primary">
             Back home
           </Link>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => window.history.back()}
-          >
-            Go back
-          </button>
+          <BackButton className="btn-secondary" label="Go back" />
         </div>
       </section>
     </div>

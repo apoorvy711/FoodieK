@@ -5,9 +5,11 @@ import ReelFeed from "../../components/ReelFeed";
 
 const Saved = () => {
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchSavedFoods = async () => {
     try {
+      setLoading(true);
       const response = await api.get("/food/save");
 
       const savedFoods = (response.data.savedFoods || [])
@@ -26,6 +28,8 @@ const Saved = () => {
       setVideos((fallbackResponse.data.foodItems || []).slice(0, 6));
     } catch (error) {
       setVideos([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,7 +50,13 @@ const Saved = () => {
     <ReelFeed
       items={videos}
       onSave={removeSaved}
-      emptyMessage="No saved videos yet."
+      isLoading={loading}
+      emptyTitle={loading ? "Loading saved dishes" : "No saved dishes yet"}
+      emptyMessage={
+        loading
+          ? "Your saved list is being prepared."
+          : "Save dishes to build your personal collection."
+      }
     />
   );
 };

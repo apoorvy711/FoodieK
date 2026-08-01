@@ -37,6 +37,10 @@
   gap: var(--space-5);
 }
 
+.auth-card > .app-back-button {
+  align-self: flex-start;
+}
+
 .auth-card--wide {
   width: min(100%, 460px);
 }
@@ -128,6 +132,12 @@ form.auth-form {
   background: var(--color-surface);
 }
 
+.field-group input[aria-invalid="true"],
+.field-group textarea[aria-invalid="true"],
+.field-group select[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
 .field-group textarea,
 .field-group select {
   appearance: none;
@@ -197,6 +207,7 @@ button.auth-submit {
 
 button.auth-submit:hover {
   background: var(--color-accent-hover);
+  transform: translateY(-1px);
 }
 button.auth-submit:active {
   transform: translateY(1px);

@@ -63,10 +63,7 @@ const Home = () => {
         params,
       });
 
-      console.log("Food Response:", data.foodItems);
-
       if (data.success) {
-        console.log("First Food:", data.foodItems[0]); // <-- ADD THIS
         setVideos(data.foodItems || []);
       } else {
         setVideos([]);

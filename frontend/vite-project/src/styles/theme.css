@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
 /* CSS Theme Variables */
 :root {
   --color-bg: #f5f7fb;
@@ -16,9 +18,7 @@
   --radius-md: 12px;
   --radius-lg: 20px;
 
-  --font-stack:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  --font-stack: "Manrope", "Segoe UI", "Helvetica Neue", sans-serif;
 
   --space-1: 4px;
   --space-2: 8px;

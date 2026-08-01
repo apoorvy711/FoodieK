@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import "../../styles/reset-password.css";
+import BackButton from "../../components/navigation/BackButton";
 
 function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -80,6 +81,7 @@ function ResetPassword() {
   return (
     <div className="reset-page">
       <div className="reset-card">
+        <BackButton />
         <div className="reset-logo">
           <ShieldCheck size={38} />
         </div>

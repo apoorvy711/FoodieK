@@ -11,6 +11,7 @@ const ReelFeed = ({
   onShare,
   onOrder,
   onComment,
+  isLoading = false,
   emptyMessage = "No videos yet.",
   emptyTitle = "Nothing to see here yet",
   emptyDescription = "New food stories will appear here shortly.",
@@ -21,8 +22,6 @@ const ReelFeed = ({
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
-
-  // ADD THIS BELOW THIS EXISTING useEffect
 
   useEffect(() => {
     setFeedItems(items);
@@ -70,8 +69,6 @@ const ReelFeed = ({
   useEffect(() => {
     const handleFoodLiked = (event) => {
       const { foodId, likeCount } = event.detail;
-
-      console.log("Socket Food:", foodId);
 
       setFeedItems((current) =>
         current.map((food) =>
@@ -182,8 +179,21 @@ const ReelFeed = ({
 
   return (
     <div className="reels-page">
-      <div className="reels-feed" role="list">
-        {feedItems.length === 0 && (
+      <div
+        className="reels-feed"
+        role="list"
+        tabIndex={0}
+        aria-label="Food reels feed"
+      >
+        {isLoading && (
+          <div className="loading-screen">
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+          </div>
+        )}
+
+        {!isLoading && feedItems.length === 0 && (
           <div className="empty-state empty-state--hero">
             <div className="empty-state__icon">🍜</div>
             <h3>{emptyTitle}</h3>
@@ -192,157 +202,156 @@ const ReelFeed = ({
           </div>
         )}
 
-        {feedItems.map((item) => {
-          console.log("Render:", item.name, item.likeCount);
+        {!isLoading &&
+          feedItems.map((item) => {
+            const partnerId =
+              typeof item.foodPartner === "string"
+                ? item.foodPartner
+                : item.foodPartner?._id;
 
-          const partnerId =
-            typeof item.foodPartner === "string"
-              ? item.foodPartner
-              : item.foodPartner?._id;
+            return (
+              <section key={item._id} className="reel" role="listitem">
+                <ResilientVideo
+                  ref={setVideoRef(item._id)}
+                  className="reel-video"
+                  src={item.video}
+                  poster={item.thumbnail || item.foodPartner?.avatar}
+                  muted
+                  playsInline
+                  loop
+                  preload="metadata"
+                />
 
-          return (
-            <section key={item._id} className="reel" role="listitem">
-              <ResilientVideo
-                ref={setVideoRef(item._id)}
-                className="reel-video"
-                src={item.video}
-                poster={item.thumbnail || item.foodPartner?.avatar}
-                muted
-                playsInline
-                loop
-                preload="metadata"
-              />
+                <div className="reel-overlay">
+                  <div className="reel-overlay-gradient" aria-hidden="true" />
 
-              <div className="reel-overlay">
-                <div className="reel-overlay-gradient" aria-hidden="true" />
+                  {/* Right Side Actions */}
 
-                {/* Right Side Actions */}
+                  <div className="reel-actions">
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={onLike ? () => onLike(item) : undefined}
+                        aria-label="Like"
+                      >
+                        ❤️
+                      </button>
 
-                <div className="reel-actions">
-                  <div className="reel-action-group">
-                    <button
-                      className="reel-action"
-                      onClick={onLike ? () => onLike(item) : undefined}
-                      aria-label="Like"
-                    >
-                      ❤️
-                    </button>
+                      <div className="reel-action__count">
+                        {item.likeCount || 0}
+                      </div>
+                    </div>
 
-                    <div className="reel-action__count">
-                      {item.likeCount || 0}
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={onSave ? () => onSave(item) : undefined}
+                        aria-label="Save"
+                      >
+                        🔖
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.savesCount || 0}
+                      </div>
+                    </div>
+
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={
+                          onComment
+                            ? () => onComment(item)
+                            : () => openComments(item)
+                        }
+                        aria-label="Comments"
+                      >
+                        💬
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.commentsCount || 0}
+                      </div>
+                    </div>
+
+                    <div className="reel-action-group">
+                      <button
+                        type="button"
+                        className="reel-action"
+                        onClick={onShare ? () => onShare(item) : undefined}
+                        aria-label="Share"
+                      >
+                        📤
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.shareCount || 0}
+                      </div>
                     </div>
                   </div>
 
-                  <div className="reel-action-group">
-                    <button
-                      className="reel-action"
-                      onClick={onSave ? () => onSave(item) : undefined}
-                      aria-label="Save"
-                    >
-                      🔖
-                    </button>
+                  {/* Bottom Content */}
 
-                    <div className="reel-action__count">
-                      {item.savesCount || 0}
-                    </div>
-                  </div>
+                  <div className="reel-content">
+                    <div className="reel-info-card">
+                      <div className="reel-info-card__top">
+                        <div>
+                          <div className="reel-restaurant">
+                            {item.foodPartner?.name || "FoodieK"}
+                          </div>
 
-                  <div className="reel-action-group">
-                    <button
-                      className="reel-action"
-                      onClick={
-                        onComment
-                          ? () => onComment(item)
-                          : () => openComments(item)
-                      }
-                      aria-label="Comments"
-                    >
-                      💬
-                    </button>
-
-                    <div className="reel-action__count">
-                      {item.commentsCount || 0}
-                    </div>
-                  </div>
-
-                  <div className="reel-action-group">
-                    <button
-                      type="button"
-                      className="reel-action"
-                      onClick={onShare ? () => onShare(item) : undefined}
-                      aria-label="Share"
-                    >
-                      📤
-                    </button>
-
-                    <div className="reel-action__count">
-                      {item.shareCount || 0}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Content */}
-
-                <div className="reel-content">
-                  <div className="reel-info-card">
-                    <div className="reel-info-card__top">
-                      <div>
-                        <div className="reel-restaurant">
-                          {item.foodPartner?.name || "FoodieK"}
+                          <div className="reel-category">
+                            {item.category?.name || "Food"}
+                          </div>
                         </div>
 
-                        <div className="reel-category">
-                          {item.category?.name || "Food"}
-                        </div>
+                        <div className="reel-price">₹{item.price ?? 0}</div>
                       </div>
 
-                      <div className="reel-price">₹{item.price ?? 0}</div>
+                      <div className="reel-stats">
+                        <span>⭐ {item.rating ?? 4.5}</span>
+
+                        <span>⏱ {item.preparationTime ?? 20} min</span>
+
+                        {item.foodType && <span>🥗 {item.foodType}</span>}
+                      </div>
                     </div>
 
-                    <div className="reel-stats">
-                      <span>⭐ {item.rating ?? 4.5}</span>
+                    <p className="reel-description" title={item.description}>
+                      {item.description}
+                    </p>
 
-                      <span>⏱ {item.preparationTime ?? 20} min</span>
-
-                      {item.foodType && <span>🥗 {item.foodType}</span>}
-                    </div>
-                  </div>
-
-                  <p className="reel-description" title={item.description}>
-                    {item.description}
-                  </p>
-
-                  <div className="reel-cta-row">
-                    <button
-                      type="button"
-                      className="reel-btn reel-btn--order"
-                      onClick={onOrder ? () => onOrder(item) : undefined}
-                    >
-                      Order Now
-                    </button>
-
-                    <Link
-                      className="reel-btn"
-                      to={`/food/${item._id}`}
-                      state={{ food: item }}
-                    >
-                      View Details
-                    </Link>
-
-                    {partnerId && (
-                      <Link
-                        className="reel-btn reel-btn--ghost"
-                        to={`/food-partner/${partnerId}`}
+                    <div className="reel-cta-row">
+                      <button
+                        type="button"
+                        className="reel-btn reel-btn--order"
+                        onClick={onOrder ? () => onOrder(item) : undefined}
                       >
-                        Visit Store
+                        Order Now
+                      </button>
+
+                      <Link
+                        className="reel-btn"
+                        to={`/food/${item._id}`}
+                        state={{ food: item }}
+                      >
+                        View Details
                       </Link>
-                    )}
+
+                      {partnerId && (
+                        <Link
+                          className="reel-btn reel-btn--ghost"
+                          to={`/food-partner/${partnerId}`}
+                        >
+                          Visit Store
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
-          );
-        })}
+              </section>
+            );
+          })}
       </div>
 
       {commentFood && (

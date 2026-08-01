@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import BackButton from "../../components/navigation/BackButton";
 import "../../styles/create-food.css";
 
 const CreateFood = () => {
@@ -159,6 +160,9 @@ const CreateFood = () => {
   return (
     <div className="create-food-page">
       <div className="create-food-card">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div className="create-food-header">
           <h1 className="create-food-title">Upload New Food</h1>
 
@@ -386,8 +390,9 @@ const CreateFood = () => {
           <div className="form-actions">
             <button
               type="submit"
-              className="btn-primary"
+              className={`btn-primary create-food-submit ${loading ? "is-loading" : ""}`}
               disabled={loading || isDisabled}
+              aria-busy={loading}
             >
               {loading ? "Uploading..." : "Upload Food"}
             </button>

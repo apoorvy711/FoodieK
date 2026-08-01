@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../auth/AuthContext";
 import { resolveMediaUrl } from "../../utils/media";
+import BackButton from "../../components/navigation/BackButton";
 import "../../styles/profile.css";
 import "../../styles/profile-hub.css";
 
@@ -9,6 +10,9 @@ function GuestProfileView() {
   return (
     <main className="profile-page">
       <section className="profile-header guest-profile-card">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div className="guest-profile-hero">
           <div className="guest-profile-avatar" aria-hidden="true">
             FK
@@ -72,6 +76,9 @@ function UserProfileView({ user, onLogout }) {
   return (
     <main className="profile-page">
       <section className="profile-header">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div className="profile-meta">
           {avatarUrl ? (
             <img className="profile-avatar" src={avatarUrl} alt="User avatar" />
@@ -122,6 +129,9 @@ function FoodPartnerProfileView({ foodPartner, onLogout }) {
   return (
     <main className="profile-page">
       <section className="profile-header">
+        <div className="page-top-row">
+          <BackButton />
+        </div>
         <div className="profile-meta">
           <div
             className="profile-avatar profile-avatar--placeholder"

@@ -39,14 +39,24 @@ const SearchBar = ({ onSearch }) => {
     onSearch?.(value.trim());
   };
 
+  const clearSearch = () => {
+    setQuery("");
+    setSuggestions([]);
+    onSearch?.("");
+  };
+
   return (
     <div className="search-container">
       <div className="search-box">
+        <span className="search-leading-icon" aria-hidden="true">
+          🔎
+        </span>
         <input
           type="text"
-          placeholder="Search foods, restaurants..."
+          placeholder="Search dishes, restaurants, categories"
           className="search-input"
           value={query}
+          aria-label="Search foods and restaurants"
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -54,6 +64,17 @@ const SearchBar = ({ onSearch }) => {
             }
           }}
         />
+
+        {query && (
+          <button
+            type="button"
+            className="search-clear"
+            onClick={clearSearch}
+            aria-label="Clear search"
+          >
+            ✕
+          </button>
+        )}
 
         <button
           type="button"
@@ -65,12 +86,17 @@ const SearchBar = ({ onSearch }) => {
       </div>
 
       {normalizedSuggestions.length > 0 && (
-        <div className="search-suggestions">
+        <div
+          className="search-suggestions"
+          role="listbox"
+          aria-label="Search suggestions"
+        >
           {normalizedSuggestions.map((item) => (
             <button
               key={item._id}
               type="button"
               className="search-suggestion"
+              role="option"
               onClick={() => {
                 setSuggestions([]);
                 navigate(`/food/${item._id}`);

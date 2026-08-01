@@ -19,15 +19,10 @@
 }
 
 .food-detail-back {
-  display: inline-flex;
+  display: flex;
   margin: 0 auto 20px;
   max-width: 1180px;
-  color: #475569;
-  font-size: 0.92rem;
-  font-weight: 700;
-}
-.food-detail-back:hover {
-  color: #ea580c;
+  width: 100%;
 }
 
 .food-detail-card {
