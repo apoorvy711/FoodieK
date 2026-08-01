@@ -35,6 +35,9 @@ const allowedOrigins = new Set([
   "http://localhost:5174",
   "http://127.0.0.1:5174",
 
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+
   "https://foodiek-frontend.onrender.com",
 
   "http://3.110.48.151",

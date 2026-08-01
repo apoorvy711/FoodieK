@@ -150,6 +150,10 @@ async function createPaymentIntent(req, res) {
 }
 
 async function verifyPayment(req, res) {
+  console.log("\n================ VERIFY PAYMENT HIT ================");
+  console.log("Request Body:", req.body);
+  console.log("===================================================\n");
+
   try {
     const {
       orderId,
@@ -217,6 +221,7 @@ async function verifyPayment(req, res) {
         ...transaction.metadata,
         verifyError: "invalid_signature",
       };
+
       await transaction.save();
 
       applyOrderStateForPayment(
@@ -224,6 +229,7 @@ async function verifyPayment(req, res) {
         "failed",
         "Payment signature verification failed",
       );
+
       await order.save();
 
       return res.status(400).json({
@@ -248,6 +254,27 @@ async function verifyPayment(req, res) {
       await order.save();
     }
 
+    // Delete cart after successful payment
+    const cartModel = require("../models/cart.model");
+
+    try {
+      console.log("🗑️ Deleting cart for user:", order.user.toString());
+
+      const deletedCart = await cartModel.findOneAndDelete({
+        user: order.user,
+      });
+
+      if (deletedCart) {
+        console.log("✅ Cart deleted successfully");
+      } else {
+        console.log("ℹ️ No cart found to delete");
+      }
+    } catch (cartError) {
+      console.error("❌ Failed to delete cart");
+      console.error(cartError);
+      // Don't fail the payment because cart deletion failed.
+    }
+
     await notificationService.createUserNotification({
       userId: order.user,
       title: "Payment successful",
@@ -263,6 +290,9 @@ async function verifyPayment(req, res) {
       transaction,
     });
   } catch (error) {
+    console.error("❌ VERIFY PAYMENT ERROR");
+    console.error(error);
+
     return res.status(500).json({
       success: false,
       message: error.message,

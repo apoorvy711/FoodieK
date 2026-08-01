@@ -7,6 +7,8 @@ const foodPartnerModel = require("../models/foodpartner.model");
 // ==========================================
 
 async function authUserMiddleware(req, res, next) {
+  console.error("🔥 AUTH MIDDLEWARE HIT:", req.method, req.originalUrl);
+
   try {
     let token = req.cookies?.token;
 
@@ -40,6 +42,8 @@ async function authUserMiddleware(req, res, next) {
     req.user = user;
 
     next();
+
+    console.error("Authenticated user:", user._id.toString());
   } catch (error) {
     return res.status(401).json({
       success: false,

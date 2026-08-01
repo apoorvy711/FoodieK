@@ -135,13 +135,19 @@ const Checkout = () => {
             },
           });
 
+          razorpayInstance.on("payment.failed", function (response) {
+            reject(new Error("Payment failed"));
+          });
+
           razorpayInstance.open();
         });
 
-      await openCheckout();
+      const result = await openCheckout();
 
-      toast.success("Payment successful. Order confirmed.");
-      navigate("/orders");
+      if (result?.success) {
+        toast.success("Payment successful. Order confirmed.");
+        navigate("/orders");
+      }
     } catch (error) {
       const message =
         error?.response?.data?.message ||

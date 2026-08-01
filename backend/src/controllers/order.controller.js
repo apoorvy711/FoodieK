@@ -64,15 +64,35 @@ async function addToCart(req, res) {
 
 async function getCart(req, res) {
   try {
-    const cart = await cartModel
-      .findOne({ user: req.user._id })
-      .populate({ path: "items.food", populate: { path: "category" } });
+    console.log("\n========== GET CART ==========");
+    console.log("Logged in user:", req.user._id.toString());
+
+    const allCarts = await cartModel.find();
+
+    console.log("Total carts:", allCarts.length);
+
+    allCarts.forEach((cart) => {
+      console.log(
+        "Cart User:",
+        cart.user.toString(),
+        "Items:",
+        cart.items.length,
+      );
+    });
+
+    const cart = await cartModel.findOne({ user: req.user._id }).populate({
+      path: "items.food",
+      populate: { path: "category" },
+    });
+
+    console.log("Found Cart:", cart);
 
     res.status(200).json({
       success: true,
       cart: cart || { items: [], totalAmount: 0 },
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -164,7 +184,7 @@ async function createOrder(req, res) {
       ],
     });
 
-    await cartModel.findByIdAndDelete(cart._id);
+    // await cartModel.findByIdAndDelete(cart._id);
 
     await notificationService.createUserNotification({
       userId: req.user._id,
