@@ -517,18 +517,36 @@ Example:
 
 ```text
 Home Page
+<img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8b2c3a8b-4717-43a6-8dfe-71824e44912a" />
+
 
 Restaurant Dashboard
 
+
 Admin Dashboard
+<img width="1907" height="970" alt="image" src="https://github.com/user-attachments/assets/7aa36891-0a2c-4ace-820b-2850035417dd" />
+
 
 Food Details
+<img width="1896" height="914" alt="image" src="https://github.com/user-attachments/assets/c620f558-cc49-4030-83b5-3b2ae17a9eb9" />
+
 
 Checkout
+<img width="1909" height="910" alt="image" src="https://github.com/user-attachments/assets/1a6b61f0-3666-4544-8e1e-8e90b3cfdb99" />
+
 
 Orders
+<img width="1907" height="910" alt="image" src="https://github.com/user-attachments/assets/4cfb9def-49ad-403d-89ad-c6229da32f9d" />
+
+
+Payment
+<img width="1910" height="952" alt="image" src="https://github.com/user-attachments/assets/e87bbb32-7624-43a9-a44d-b920730f6498" />
+
+
 
 Mobile View
+<img width="794" height="1600" alt="MobileView" src="https://github.com/user-attachments/assets/b907a771-0ffe-4b1b-a483-fb675348765a" />
+
 ```
 
 ---
