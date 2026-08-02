@@ -515,7 +515,7 @@ Deployment workflow includes:
 
 Example:
 
-```text
+text
 Home Page
 <img width="1910" height="984" alt="image" src="https://github.com/user-attachments/assets/8b2c3a8b-4717-43a6-8dfe-71824e44912a" />
 
@@ -547,7 +547,7 @@ Payment
 Mobile View
 <img width="794" height="1600" alt="MobileView" src="https://github.com/user-attachments/assets/b907a771-0ffe-4b1b-a483-fb675348765a" />
 
-```
+
 
 ---
 
