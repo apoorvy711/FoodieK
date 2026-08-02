@@ -19,7 +19,10 @@ async function getDashboard(req, res) {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -32,7 +35,13 @@ async function listUsers(req, res) {
       .sort({ createdAt: -1 });
     return res.status(200).json({ success: true, users });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
+    });
   }
 }
 
@@ -45,7 +54,13 @@ async function listFoodPartners(req, res) {
 
     return res.status(200).json({ success: true, foodPartners });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
+    });
   }
 }
 
@@ -59,7 +74,13 @@ async function listFoods(req, res) {
 
     return res.status(200).json({ success: true, foods });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
+    });
   }
 }
 
@@ -82,7 +103,13 @@ async function toggleFoodAvailability(req, res) {
       food,
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
+    });
   }
 }
 

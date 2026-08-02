@@ -3,6 +3,11 @@ console.log("EMAIL WORKER FILE EXECUTED");
 console.log(__filename);
 console.log("==================================");
 
+require("dotenv").config();
+
+console.log("EMAIL:", process.env.EMAIL);
+console.log("PASSWORD:", process.env.EMAIL_PASSWORD);
+
 const { Worker } = require("bullmq");
 const connection = require("../config/bullmq.config");
 const emailService = require("../services/email.service");

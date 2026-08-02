@@ -18,6 +18,11 @@
     #f8fafc;
 }
 
+.food-detail-page,
+.food-detail-page * {
+  box-sizing: border-box;
+}
+
 .food-detail-back {
   display: flex;
   margin: 0 auto 20px;
@@ -30,6 +35,7 @@
   grid-template-columns: minmax(280px, 0.96fr) minmax(320px, 1.04fr);
   max-width: min(1180px, 100%);
   margin: 0 auto;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 28px;
@@ -90,6 +96,7 @@
 .food-detail-body {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   padding: clamp(1.25rem, 3vw, 2rem);
 }
 .food-detail-header-row {
@@ -98,6 +105,9 @@
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+}
+.food-detail-header-row > div {
+  min-width: 0;
 }
 .food-detail-kicker {
   display: inline-flex;
@@ -233,6 +243,7 @@
   font: inherit;
   font-size: 0.83rem;
   font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     transform 150ms ease,
@@ -272,6 +283,7 @@
 .food-detail-page > .food-detail-section {
   max-width: 1180px;
   margin: 42px auto 0;
+  min-width: 0;
 }
 .food-detail-page > .food-detail-section > h2 {
   font-size: 1.38rem;
@@ -280,6 +292,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
+  min-width: 0;
 }
 .related-food-card {
   overflow: hidden;
@@ -312,10 +325,16 @@
 }
 .related-food-copy strong {
   font-size: 0.96rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .related-food-copy span {
   color: #64748b;
   font-size: 0.83rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .comment-modal-backdrop {
@@ -338,6 +357,7 @@
   border-radius: 20px;
   background: #fff;
   box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
+  overflow: hidden;
 }
 .comment-modal-header {
   display: flex;
@@ -361,6 +381,7 @@
 }
 .comment-list {
   min-height: 120px;
+  min-width: 0;
   overflow-y: auto;
 }
 .comment-item {
@@ -449,6 +470,15 @@
   }
   .food-detail-header-row h1 {
     font-size: clamp(1.45rem, 6.3vw, 2rem);
+  }
+
+  .food-detail-description {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .related-food-grid {
+    grid-template-columns: 1fr;
   }
   .food-detail-meta-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

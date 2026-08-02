@@ -40,11 +40,6 @@ async function createFood(req, res) {
       tags,
       isAvailable,
     } = req.body;
-    console.log("========== CREATE FOOD ==========");
-    console.log("req.file:", req.file);
-    console.log("req.body:", req.body);
-    console.log("Content-Type:", req.headers["content-type"]);
-    console.log("===============================");
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -124,7 +119,10 @@ async function createFood(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -214,7 +212,10 @@ async function getFoodItems(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -290,7 +291,10 @@ async function getFoodById(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -333,7 +337,10 @@ async function searchFoods(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -346,6 +353,15 @@ async function shareFood(req, res) {
       return res.status(400).json({
         success: false,
         message: "Food id is required",
+      });
+    }
+
+    const food = await foodModel.findById(foodId);
+
+    if (!food) {
+      return res.status(404).json({
+        success: false,
+        message: "Food not found",
       });
     }
 
@@ -379,7 +395,10 @@ async function shareFood(req, res) {
     return res.status(500).json({
       success: false,
 
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -391,6 +410,22 @@ async function shareFood(req, res) {
 async function likeFood(req, res) {
   try {
     const { foodId } = req.body;
+
+    if (!foodId) {
+      return res.status(400).json({
+        success: false,
+        message: "Food id is required",
+      });
+    }
+
+    const food = await foodModel.findById(foodId);
+
+    if (!food) {
+      return res.status(404).json({
+        success: false,
+        message: "Food not found",
+      });
+    }
 
     const existingLike = await likeModel.findOne({
       user: req.user._id,
@@ -462,7 +497,10 @@ async function likeFood(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -475,6 +513,22 @@ async function saveFood(req, res) {
   try {
     const { foodId } = req.body;
 
+    if (!foodId) {
+      return res.status(400).json({
+        success: false,
+        message: "Food id is required",
+      });
+    }
+
+    const food = await foodModel.findById(foodId);
+
+    if (!food) {
+      return res.status(404).json({
+        success: false,
+        message: "Food not found",
+      });
+    }
+
     const existingSave = await saveModel.findOne({
       user: req.user._id,
       food: foodId,
@@ -485,15 +539,22 @@ async function saveFood(req, res) {
         _id: existingSave._id,
       });
 
-      await foodModel.findByIdAndUpdate(foodId, {
-        $inc: {
-          savesCount: -1,
+      const updatedFood = await foodModel.findByIdAndUpdate(
+        foodId,
+        {
+          $inc: {
+            savesCount: -1,
+          },
         },
-      });
+        {
+          new: true,
+        },
+      );
 
       return res.status(200).json({
         success: true,
         saved: false,
+        savesCount: updatedFood?.savesCount ?? 0,
         message: "Food removed from saved items.",
       });
     }
@@ -522,7 +583,10 @@ async function saveFood(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -562,7 +626,10 @@ async function getSaveFood(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }

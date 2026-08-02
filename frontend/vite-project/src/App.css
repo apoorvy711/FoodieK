@@ -355,9 +355,7 @@ a:focus-visible {
   .theme-toggle {
     width: 3.3rem;
     height: 1.95rem;
-    top: auto;
     right: 0.75rem;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 4.7rem);
   }
 
   :root[data-theme="dark"] .theme-toggle-thumb {
@@ -367,8 +365,7 @@ a:focus-visible {
 
 @media (min-width: 641px) and (max-width: 1024px) {
   .theme-toggle {
-    top: auto;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    top: 1rem;
   }
 }
 

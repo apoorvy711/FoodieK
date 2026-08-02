@@ -17,6 +17,10 @@ const upload = multer({
 // ==========================
 router.post(
   "/",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Create Food'
+  */
   authMiddleware.authFoodPartnerMiddleware,
   upload.single("video"),
   foodValidator.createFoodValidation,
@@ -29,6 +33,10 @@ router.post(
 // ==========================
 router.get(
   "/",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Get All Foods'
+  */
   foodValidator.getFoodValidation,
   validationMiddleware.validateRequest,
   foodController.getFoodItems,
@@ -39,6 +47,10 @@ router.get(
 // ==========================
 router.post(
   "/like",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Like Food'
+  */
   authMiddleware.authUserMiddleware,
   foodController.likeFood,
 );
@@ -48,6 +60,10 @@ router.post(
 // ==========================
 router.post(
   "/save",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Save Food'
+  */
   authMiddleware.authUserMiddleware,
   foodController.saveFood,
 );
@@ -57,6 +73,10 @@ router.post(
 // ==========================
 router.post(
   "/share",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Share Food'
+  */
   authMiddleware.authUserMiddleware,
   foodController.shareFood,
 );
@@ -64,9 +84,25 @@ router.post(
 // ==========================
 // Get Saved Foods
 // ==========================
-router.get("/save", foodController.getSaveFood);
+router.get(
+  "/save",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Get Saved Foods'
+  */
+  foodController.getSaveFood,
+);
 
-// Get one food item (used by shared links and the comments screen)
-router.get("/:id", foodController.getFoodById);
+// ==========================
+// Get Food Details
+// ==========================
+router.get(
+  "/:id",
+  /*
+    #swagger.tags = ['Food']
+    #swagger.summary = 'Get Food Details'
+  */
+  foodController.getFoodById,
+);
 
 module.exports = router;

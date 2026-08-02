@@ -61,7 +61,7 @@ const Profile = () => {
   };
 
   return (
-    <main className="profile-page">
+    <main className="profile-page store-profile-page">
       <section className="profile-header">
         <div className="page-top-row">
           <BackButton />

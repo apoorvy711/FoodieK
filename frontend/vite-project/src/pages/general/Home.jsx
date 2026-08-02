@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { useAuth } from "../../auth/AuthContext";
@@ -22,7 +21,6 @@ const Home = () => {
   const [locationInput, setLocationInput] = useState("Your location");
   const [showLocationEditor, setShowLocationEditor] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const auth = useAuth();
   const { requireCustomerAuth, modalConfig, closeAuthModal } =
     useAuthRequiredModal();
@@ -199,7 +197,13 @@ const Home = () => {
           video._id === item._id
             ? {
                 ...video,
-                savesCount: data.savesCount,
+                savesCount:
+                  typeof data.savesCount === "number"
+                    ? data.savesCount
+                    : Math.max(
+                        0,
+                        (video.savesCount || 0) + (data.saved ? 1 : -1),
+                      ),
               }
             : video,
         ),
@@ -212,78 +216,62 @@ const Home = () => {
       toast.error(error.response?.data?.message || "Could not save food");
     }
   };
-  /*
-  const shareVideo = async (item) => {
-    try {
-      const shareUrl = `${window.location.origin}/food/${item._id}`;
-
-      // Always copy link (works on Windows Chrome)
-      await navigator.clipboard.writeText(shareUrl);
-
-      const { data } = await api.post("/food/share", {
-        foodId: item._id,
-      });
-
-      setVideos((prev) =>
-        prev.map((video) =>
-          video._id === item._id
-            ? {
-                ...video,
-                shareCount: data.shareCount,
-              }
-            : video,
-        ),
-      );
-
-      toast.success("Food link copied to clipboard");
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Could not share food");
-    }
-  };
-*/
   const shareVideo = async (item) => {
     try {
       const shareUrl = `${window.location.origin}/food/${item._id}`;
       let shared = false;
 
       if (navigator.share) {
-        await navigator.share({
-          title: item.name || "FoodieK item",
-          text: item.description || "Check out this food item",
-          url: shareUrl,
-        });
-        shared = true;
-      } else {
-        const temporaryInput = document.createElement("textarea");
-        temporaryInput.value = shareUrl;
-        temporaryInput.setAttribute("readonly", "");
-        temporaryInput.style.position = "fixed";
-        temporaryInput.style.opacity = "0";
-        document.body.appendChild(temporaryInput);
-        temporaryInput.select();
-        const copied = document.execCommand("copy");
-        document.body.removeChild(temporaryInput);
-
-        if (!copied) {
-          throw new Error("Sharing is not supported in this browser");
+        try {
+          await navigator.share({
+            title: item.name || "FoodieK item",
+            text: item.description || "Check out this food item",
+            url: shareUrl,
+          });
+          shared = true;
+        } catch (shareError) {
+          if (shareError?.name === "AbortError") {
+            return;
+          }
         }
       }
 
-      const { data } = await api.post("/food/share", {
-        foodId: item._id,
-      });
+      if (!shared) {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+        } else {
+          const temporaryInput = document.createElement("textarea");
+          temporaryInput.value = shareUrl;
+          temporaryInput.setAttribute("readonly", "");
+          temporaryInput.style.position = "fixed";
+          temporaryInput.style.opacity = "0";
+          document.body.appendChild(temporaryInput);
+          temporaryInput.select();
+          const copied = document.execCommand("copy");
+          document.body.removeChild(temporaryInput);
 
-      setVideos((prev) =>
-        prev.map((video) =>
-          video._id === item._id
-            ? {
-                ...video,
-                shareCount: data.shareCount,
-              }
-            : video,
-        ),
-      );
+          if (!copied) {
+            throw new Error("Sharing is not supported in this browser");
+          }
+        }
+      }
+
+      if (auth.isUser) {
+        const { data } = await api.post("/food/share", {
+          foodId: item._id,
+        });
+
+        setVideos((prev) =>
+          prev.map((video) =>
+            video._id === item._id
+              ? {
+                  ...video,
+                  shareCount: data.shareCount,
+                }
+              : video,
+          ),
+        );
+      }
 
       toast.success(shared ? "Food shared" : "Food link copied to clipboard");
     } catch (error) {
@@ -319,24 +307,6 @@ const Home = () => {
       );
     }
   };
-  /*
-  const commentVideo = (item) => {
-    navigate(`/food/${item._id}`);
-  };
-*/
-  const commentVideo = (item) => {
-    if (
-      !requireCustomerAuth({
-        title: "Login to comment",
-        description:
-          "Please login with your customer account to join the conversation.",
-      })
-    ) {
-      return;
-    }
-
-    navigate(`/food/${item._id}?openComments=1`);
-  };
   return (
     <div className="home-page">
       <HomeHeader
@@ -366,7 +336,6 @@ const Home = () => {
           onSave={saveVideo}
           onShare={shareVideo}
           onOrder={orderVideo}
-          onComment={commentVideo}
           emptyMessage="No food videos found for your current search."
           emptyTitle="Nothing matches your search yet"
           emptyDescription="Try another keyword or browse a different category to discover more dishes."

@@ -177,6 +177,16 @@ const ReelFeed = ({
     }
   };
 
+  const handleCommentClick = (item) => {
+    openComments(item);
+  };
+
+  const handleShareClick = (item) => {
+    if (onShare) {
+      onShare(item);
+    }
+  };
+
   return (
     <div className="reels-page">
       <div
@@ -224,71 +234,6 @@ const ReelFeed = ({
 
                 <div className="reel-overlay">
                   <div className="reel-overlay-gradient" aria-hidden="true" />
-
-                  {/* Right Side Actions */}
-
-                  <div className="reel-actions">
-                    <div className="reel-action-group">
-                      <button
-                        className="reel-action"
-                        onClick={onLike ? () => onLike(item) : undefined}
-                        aria-label="Like"
-                      >
-                        ❤️
-                      </button>
-
-                      <div className="reel-action__count">
-                        {item.likeCount || 0}
-                      </div>
-                    </div>
-
-                    <div className="reel-action-group">
-                      <button
-                        className="reel-action"
-                        onClick={onSave ? () => onSave(item) : undefined}
-                        aria-label="Save"
-                      >
-                        🔖
-                      </button>
-
-                      <div className="reel-action__count">
-                        {item.savesCount || 0}
-                      </div>
-                    </div>
-
-                    <div className="reel-action-group">
-                      <button
-                        className="reel-action"
-                        onClick={
-                          onComment
-                            ? () => onComment(item)
-                            : () => openComments(item)
-                        }
-                        aria-label="Comments"
-                      >
-                        💬
-                      </button>
-
-                      <div className="reel-action__count">
-                        {item.commentsCount || 0}
-                      </div>
-                    </div>
-
-                    <div className="reel-action-group">
-                      <button
-                        type="button"
-                        className="reel-action"
-                        onClick={onShare ? () => onShare(item) : undefined}
-                        aria-label="Share"
-                      >
-                        📤
-                      </button>
-
-                      <div className="reel-action__count">
-                        {item.shareCount || 0}
-                      </div>
-                    </div>
-                  </div>
 
                   {/* Bottom Content */}
 
@@ -346,6 +291,67 @@ const ReelFeed = ({
                           Visit Store
                         </Link>
                       )}
+                    </div>
+                  </div>
+
+                  {/* Right Side Actions */}
+
+                  <div className="reel-actions">
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={onLike ? () => onLike(item) : undefined}
+                        aria-label="Like"
+                      >
+                        ❤️
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.likeCount || 0}
+                      </div>
+                    </div>
+
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={onSave ? () => onSave(item) : undefined}
+                        aria-label="Save"
+                      >
+                        🔖
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.savesCount || 0}
+                      </div>
+                    </div>
+
+                    <div className="reel-action-group">
+                      <button
+                        className="reel-action"
+                        onClick={() => handleCommentClick(item)}
+                        aria-label="Comments"
+                      >
+                        💬
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.commentsCount || 0}
+                      </div>
+                    </div>
+
+                    <div className="reel-action-group">
+                      <button
+                        type="button"
+                        className="reel-action"
+                        onClick={() => handleShareClick(item)}
+                        aria-label="Share"
+                      >
+                        📤
+                      </button>
+
+                      <div className="reel-action__count">
+                        {item.shareCount || 0}
+                      </div>
                     </div>
                   </div>
                 </div>

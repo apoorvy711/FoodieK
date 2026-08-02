@@ -24,12 +24,7 @@ function initializeSocket(server) {
   io.use(socketAuthMiddleware);
 
   io.on("connection", (socket) => {
-    console.log("=================================");
     console.log("✅ Authenticated Socket Connected");
-    console.log("Socket ID:", socket.id);
-    console.log("Role:", socket.role);
-    console.log("User ID:", socket.user._id);
-    console.log("=================================");
 
     // Join personal room
     const userRoom = socket.user._id.toString();
@@ -55,11 +50,7 @@ function initializeSocket(server) {
     // socket.on("join-room", () => {});
 
     socket.on("disconnect", (reason) => {
-      console.log("=================================");
       console.log("❌ Client Disconnected");
-      console.log("Socket ID:", socket.id);
-      console.log("Reason:", reason);
-      console.log("=================================");
     });
   });
 

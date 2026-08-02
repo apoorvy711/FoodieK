@@ -2,6 +2,9 @@
 
 /* Page container ensures full viewport and background */
 .reels-page {
+  --reel-bottom-nav-height: clamp(3.25rem, 7vw, 3.75rem);
+  --reel-cta-nav-gap: clamp(0.5rem, 1.2vw, 0.875rem);
+  --reel-actions-bottom-gap: clamp(0.9rem, 1.9vw, 1.35rem);
   height: 100dvh;
   background: linear-gradient(180deg, #f8fbff 0%, #f5f8ff 100%);
   overflow: hidden;
@@ -17,9 +20,8 @@
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  scrollbar-gutter: stable both-edges;
   touch-action: pan-y;
-  padding-top: clamp(5.3rem, 9vw, 6.25rem);
+  padding-top: 0;
 }
 
 /* Each reel takes full viewport */
@@ -68,8 +70,12 @@
 .reel-content {
   position: relative;
   width: 100%;
+  min-width: 0;
   padding: clamp(0.9rem, 2.5vw, 1.35rem);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0) + 5.9rem);
+  padding-bottom: calc(
+    env(safe-area-inset-bottom, 0) + var(--reel-bottom-nav-height) +
+      var(--reel-cta-nav-gap)
+  );
   display: flex;
   flex-direction: column;
   padding-right: clamp(4.5rem, 15vw, 6rem);
@@ -86,6 +92,7 @@
 
 .reel-info-card {
   width: min(100%, 28rem);
+  min-width: 0;
   padding: 0.8rem 0.9rem;
   border-radius: 1rem;
   background: linear-gradient(
@@ -108,12 +115,18 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reel-category {
   margin-top: 0.2rem;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reel-price {
@@ -198,6 +211,7 @@
   font-weight: 700;
   letter-spacing: 0.3px;
   text-decoration: none;
+  white-space: nowrap;
   box-shadow: var(--shadow-md);
   transition:
     transform var(--transition-base),
@@ -220,6 +234,10 @@
 @media (min-width: 768px) {
   .reel-content {
     padding: 2rem;
+    padding-bottom: calc(
+      env(safe-area-inset-bottom, 0) + var(--reel-bottom-nav-height) +
+        var(--reel-cta-nav-gap)
+    );
   }
   .reel-description {
     max-width: 70ch;
@@ -230,7 +248,10 @@
 .reel-actions {
   position: absolute;
   right: 0.7rem;
-  bottom: clamp(5.3rem, 10vw, 6.5rem);
+  bottom: calc(
+    env(safe-area-inset-bottom, 0) + var(--reel-bottom-nav-height) +
+      var(--reel-actions-bottom-gap)
+  );
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -346,6 +367,7 @@
 
 .feed-comment-list {
   min-height: 110px;
+  min-width: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -388,13 +410,22 @@
 }
 
 @media (max-width: 640px) {
+  .reels-page {
+    --reel-bottom-nav-height: 4rem;
+    --reel-cta-nav-gap: 0.5rem;
+    --reel-actions-bottom-gap: 0.9rem;
+  }
+
   .reels-feed {
-    padding-top: 4.95rem;
+    padding-top: 0;
   }
 
   .reel-content {
     padding-right: clamp(3.75rem, 18vw, 4.5rem);
-    padding-bottom: calc(env(safe-area-inset-bottom, 0) + 5.5rem);
+    padding-bottom: calc(
+      env(safe-area-inset-bottom, 0) + var(--reel-bottom-nav-height) +
+        var(--reel-cta-nav-gap)
+    );
     gap: 0.72rem;
   }
 
@@ -410,6 +441,10 @@
 
   .reel-description {
     max-width: min(100%, 36ch);
+  }
+
+  .reel-info-card {
+    width: min(100%, 22rem);
   }
 
   .reel-btn {

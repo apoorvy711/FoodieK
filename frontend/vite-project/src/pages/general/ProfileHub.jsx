@@ -8,7 +8,7 @@ import "../../styles/profile-hub.css";
 
 function GuestProfileView() {
   return (
-    <main className="profile-page">
+    <main className="profile-page profile-page--hub">
       <section className="profile-header guest-profile-card">
         <div className="page-top-row">
           <BackButton />
@@ -74,7 +74,7 @@ function UserProfileView({ user, onLogout }) {
   const avatarUrl = resolveMediaUrl(user?.avatar, "");
 
   return (
-    <main className="profile-page">
+    <main className="profile-page profile-page--hub">
       <section className="profile-header">
         <div className="page-top-row">
           <BackButton />
@@ -127,7 +127,7 @@ function UserProfileView({ user, onLogout }) {
 
 function FoodPartnerProfileView({ foodPartner, onLogout }) {
   return (
-    <main className="profile-page">
+    <main className="profile-page profile-page--hub">
       <section className="profile-header">
         <div className="page-top-row">
           <BackButton />

@@ -15,7 +15,6 @@ function SocketListener() {
 
     const handleConnect = () => {
       console.log("✅ Socket Connected");
-      console.log("Socket ID:", socket.id);
     };
 
     const handleConnectError = (error) => {
@@ -32,9 +31,6 @@ function SocketListener() {
     // Notifications
     // ===========================
     const handleNotification = (data) => {
-      console.log("📩 Notification Received");
-      console.log(data);
-
       toast.success(data.message);
 
       if (data.type === "ORDER" || data.type === "ORDER_STATUS_UPDATED") {
@@ -50,9 +46,6 @@ function SocketListener() {
     // Live Likes
     // ===========================
     const handleFoodLiked = (data) => {
-      console.log("❤️ Food Like Updated");
-      console.log(data);
-
       window.dispatchEvent(
         new CustomEvent("food-liked", {
           detail: data,
@@ -61,9 +54,6 @@ function SocketListener() {
     };
 
     const handleCommentAdded = (data) => {
-      console.log("💬 Comment Added");
-      console.log(data);
-
       window.dispatchEvent(
         new CustomEvent("comment-added", {
           detail: data,

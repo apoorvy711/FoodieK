@@ -3,6 +3,7 @@ const orderItemModel = require("../models/orderItem.model");
 const orderModel = require("../models/order.model");
 const foodModel = require("../models/food.model");
 const notificationService = require("../services/notification.service");
+const mongoose = require("mongoose");
 
 async function addToCart(req, res) {
   try {
@@ -57,35 +58,20 @@ async function addToCart(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
 
 async function getCart(req, res) {
   try {
-    console.log("\n========== GET CART ==========");
-    console.log("Logged in user:", req.user._id.toString());
-
-    const allCarts = await cartModel.find();
-
-    console.log("Total carts:", allCarts.length);
-
-    allCarts.forEach((cart) => {
-      console.log(
-        "Cart User:",
-        cart.user.toString(),
-        "Items:",
-        cart.items.length,
-      );
-    });
-
     const cart = await cartModel.findOne({ user: req.user._id }).populate({
       path: "items.food",
       populate: { path: "category" },
     });
-
-    console.log("Found Cart:", cart);
 
     res.status(200).json({
       success: true,
@@ -95,13 +81,22 @@ async function getCart(req, res) {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
 
 async function removeFromCart(req, res) {
   try {
+    if (!mongoose.Types.ObjectId.isValid(foodId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid food id",
+      });
+    }
     const { foodId } = req.params;
     const cart = await cartModel.findOne({ user: req.user._id });
 
@@ -139,7 +134,10 @@ async function removeFromCart(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -202,7 +200,10 @@ async function createOrder(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -239,7 +240,10 @@ async function getFoodPartnerOrders(req, res) {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -248,6 +252,13 @@ async function updateOrderStatus(req, res) {
   try {
     const { orderId } = req.params;
     const { status, note = "" } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order id",
+      });
+    }
 
     const order = await orderModel.findById(orderId).populate({
       path: "items",
@@ -312,7 +323,10 @@ async function updateOrderStatus(req, res) {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -339,7 +353,10 @@ async function getOrders(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }

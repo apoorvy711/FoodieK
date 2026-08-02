@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../api/api";
 import toast from "react-hot-toast";
 import BackButton from "../../components/navigation/BackButton";
@@ -63,7 +64,7 @@ const Notifications = () => {
   };
 
   return (
-    <div className="profile-page">
+    <div className="profile-page ordering-page notifications-page">
       <section className="profile-header">
         <div className="page-top-row">
           <BackButton />
@@ -88,12 +89,24 @@ const Notifications = () => {
 
       <section className="notification-list">
         {loading ? (
-          <div className="loading-screen">
+          <div
+            className="loading-screen ordering-loading-shell"
+            aria-live="polite"
+          >
+            <div className="ordering-skeleton-list" aria-hidden="true">
+              <div className="ordering-skeleton-item" />
+              <div className="ordering-skeleton-item" />
+              <div className="ordering-skeleton-item" />
+            </div>
             <h2>Loading notifications...</h2>
           </div>
         ) : notifications.length === 0 ? (
-          <div className="empty-state">
-            <p>No new notifications.</p>
+          <div className="empty-state ordering-empty-state">
+            <h2>All caught up</h2>
+            <p>No new notifications right now.</p>
+            <Link to="/orders" className="btn-primary">
+              View orders
+            </Link>
           </div>
         ) : (
           notifications.map((notification) => (

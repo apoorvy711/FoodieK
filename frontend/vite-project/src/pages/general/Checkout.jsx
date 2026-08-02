@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import BackButton from "../../components/navigation/BackButton";
+import { resolveMediaUrl } from "../../utils/media";
 
 function loadRazorpayCheckoutScript() {
   return new Promise((resolve) => {
@@ -56,6 +57,7 @@ const Checkout = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    let createdOrder = null;
 
     if (submitting) {
       return;
@@ -74,7 +76,7 @@ const Checkout = () => {
         paymentMethod,
       });
 
-      const createdOrder = orderResponse.data?.order;
+      createdOrder = orderResponse.data?.order;
 
       if (!createdOrder?._id) {
         throw new Error("Order creation failed");
@@ -82,7 +84,14 @@ const Checkout = () => {
 
       if (paymentMethod === "cash") {
         toast.success("Order placed successfully");
-        navigate("/orders");
+        navigate("/orders/success", {
+          replace: true,
+          state: {
+            orderId: createdOrder._id,
+            paymentMethod,
+            totalAmount: createdOrder.totalAmount,
+          },
+        });
         return;
       }
 
@@ -146,7 +155,14 @@ const Checkout = () => {
 
       if (result?.success) {
         toast.success("Payment successful. Order confirmed.");
-        navigate("/orders");
+        navigate("/orders/success", {
+          replace: true,
+          state: {
+            orderId: createdOrder._id,
+            paymentMethod,
+            totalAmount: createdOrder.totalAmount,
+          },
+        });
       }
     } catch (error) {
       const message =
@@ -154,13 +170,23 @@ const Checkout = () => {
         error?.message ||
         "Could not place order";
       toast.error(message);
+
+      if (/payment|razorpay|popup/i.test(message)) {
+        navigate("/orders/failure", {
+          replace: true,
+          state: {
+            message,
+            orderId: createdOrder?._id,
+          },
+        });
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="profile-page">
+    <div className="profile-page ordering-page checkout-page">
       <section className="profile-header">
         <div className="page-top-row">
           <BackButton />
@@ -173,7 +199,10 @@ const Checkout = () => {
         </div>
       </section>
 
-      <form className="checkout-form" onSubmit={onSubmit}>
+      <form
+        className="checkout-form ordering-checkout-form"
+        onSubmit={onSubmit}
+      >
         <div className="field-group">
           <label htmlFor="address">Delivery address</label>
           <textarea
@@ -197,6 +226,37 @@ const Checkout = () => {
             <option value="wallet">Wallet</option>
           </select>
         </div>
+
+        <section className="checkout-card ordering-checkout-summary">
+          <h2>Order summary</h2>
+          {cart.items.length === 0 ? (
+            <p>Your cart is currently empty.</p>
+          ) : (
+            <div className="ordering-checkout-summary__list">
+              {cart.items.map((item) => (
+                <article
+                  key={item.food?._id || item._id}
+                  className="ordering-checkout-summary__item"
+                >
+                  <img
+                    src={resolveMediaUrl(
+                      item.food?.thumbnail || item.food?.foodPartner?.avatar,
+                      "/media/hero.png",
+                    )}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div>
+                    <strong>{item.food?.name}</strong>
+                    <span>Qty {item.quantity}</span>
+                  </div>
+                  <p>₹{item.price}</p>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
 
         <div className="checkout-card checkout-total">
           <span>Total</span>

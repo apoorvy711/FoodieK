@@ -1,10 +1,12 @@
 const userModel = require("../models/user.model");
 const foodPartnerModel = require("../models/foodpartner.model");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
+const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
 const emailService = require("../services/email.service");
 const crypto = require("crypto");
 const emailQueueService = require("../services/emailQueue.service");
+const { issueTokens } = require("../utils/authTokens");
 
 function buildCookieOptions() {
   const isProduction = process.env.NODE_ENV === "production";
@@ -39,16 +41,12 @@ async function registerUser(req, res) {
   // Queue Welcome Email
   await emailQueueService.addCustomerWelcomeEmail(user);
 
-  const token = jwt.sign(
-    {
-      id: user._id,
-      role: user.role || "user",
-    },
-    process.env.JWT_SECRET,
-  );
+  const { accessToken, refreshToken } = issueTokens({
+    id: user._id,
+    role: user.role || "user",
+  });
 
-  res.cookie("token", token, buildCookieOptions());
-
+  res.cookie("token", accessToken, buildCookieOptions());
   return res.status(201).json({
     message: "User registered successfully",
     user: {
@@ -89,8 +87,6 @@ async function forgotPassword(req, res) {
       email: user.email,
       resetLink,
     });
-
-    console.log("Reset Token:", resetToken);
 
     return res.status(200).json({
       message: "User found",
@@ -188,17 +184,12 @@ async function loginUser(req, res) {
       message: "Invalid email or password",
     });
   }
+  const { accessToken, refreshToken } = issueTokens({
+    id: user._id,
+    role: user.role || "user",
+  });
 
-  const token = jwt.sign(
-    {
-      id: user._id,
-      role: "user",
-    },
-    process.env.JWT_SECRET,
-  );
-
-  res.cookie("token", token, buildCookieOptions());
-
+  res.cookie("token", accessToken, buildCookieOptions());
   res.status(200).json({
     message: "User logged in successfully",
     user: {
@@ -210,7 +201,8 @@ async function loginUser(req, res) {
 }
 
 function logoutUser(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", buildCookieOptions());
+
   res.status(200).json({
     message: "User logged out successfully",
   });
@@ -271,15 +263,12 @@ async function registerFoodPartner(req, res) {
     followersCount: 0,
   });
 
-  const token = jwt.sign(
-    {
-      id: foodPartner._id,
-      role: "food_partner",
-    },
-    process.env.JWT_SECRET,
-  );
+  const { accessToken, refreshToken } = issueTokens({
+    id: foodPartner._id,
+    role: "food_partner",
+  });
 
-  res.cookie("token", token, buildCookieOptions());
+  res.cookie("token", accessToken, buildCookieOptions());
 
   res.status(201).json({
     message: "Food partner registered successfully",
@@ -315,15 +304,12 @@ async function loginFoodPartner(req, res) {
     });
   }
 
-  const token = jwt.sign(
-    {
-      id: foodPartner._id,
-      role: "food_partner",
-    },
-    process.env.JWT_SECRET,
-  );
+  const { accessToken, refreshToken } = issueTokens({
+    id: foodPartner._id,
+    role: "food_partner",
+  });
 
-  res.cookie("token", token, buildCookieOptions());
+  res.cookie("token", accessToken, buildCookieOptions());
 
   res.status(200).json({
     message: "Food partner logged in successfully",
@@ -336,9 +322,9 @@ async function loginFoodPartner(req, res) {
 }
 
 function logoutFoodPartner(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", buildCookieOptions());
   res.status(200).json({
-    message: "Food partner logged out successfully",
+    message: "User logged out successfully",
   });
 }
 

@@ -1,3 +1,65 @@
+.profile-page--hub {
+  padding-top: clamp(0.75rem, 2.3vw, 1.4rem);
+  padding-inline: clamp(0.75rem, 2.8vw, 1.8rem);
+  padding-bottom: calc(6.1rem + env(safe-area-inset-bottom, 0px));
+}
+
+.profile-page--hub > * {
+  width: min(100%, 52rem);
+  margin-inline: auto;
+}
+
+.profile-page--hub .profile-header {
+  gap: clamp(0.95rem, 2.3vw, 1.5rem);
+  padding: clamp(0.95rem, 2.8vw, 1.55rem);
+}
+
+.profile-page--hub .profile-meta {
+  align-items: flex-start;
+  gap: clamp(0.8rem, 2.1vw, 1.05rem);
+}
+
+.profile-page--hub .profile-info {
+  min-width: 0;
+  gap: 0.38rem;
+}
+
+.profile-page--hub .profile-business {
+  font-size: clamp(1.12rem, 3.6vw, 1.65rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.profile-page--hub .profile-address {
+  font-size: clamp(0.86rem, 2.2vw, 0.96rem);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.profile-page--hub .profile-grid {
+  margin-top: 0;
+  gap: clamp(0.7rem, 1.8vw, 1rem);
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+}
+
+.profile-page--hub .profile-grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+}
+
+.profile-page--hub .profile-tile {
+  min-height: clamp(4.25rem, 13vw, 5.25rem);
+  padding: clamp(0.78rem, 2.3vw, 1.1rem);
+  font-size: clamp(0.9rem, 2.1vw, 1rem);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.profile-page--hub .profile-logout-btn {
+  width: min(100%, 16rem);
+  min-height: 2.9rem;
+  font-size: clamp(0.9rem, 2vw, 0.98rem);
+}
+
 .guest-profile-card {
   gap: 1.25rem;
 }
@@ -6,6 +68,7 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  min-width: 0;
 }
 
 .guest-profile-avatar {
@@ -27,6 +90,11 @@
   min-width: 0;
 }
 
+.guest-profile-copy .profile-business,
+.guest-profile-copy .profile-address {
+  overflow-wrap: anywhere;
+}
+
 .guest-auth-sections {
   display: grid;
   gap: 1rem;
@@ -35,20 +103,24 @@
 .guest-auth-panel {
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 1rem;
+  padding: clamp(0.82rem, 2.3vw, 1rem);
   background: rgba(255, 255, 255, 0.82);
 }
 
 .guest-auth-panel h2 {
   margin: 0;
   color: #172033;
-  font-size: 1.05rem;
+  font-size: clamp(0.98rem, 2.8vw, 1.08rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .guest-auth-panel p {
   margin: 0.45rem 0 0.9rem;
   color: #64748b;
-  font-size: 0.92rem;
+  font-size: clamp(0.86rem, 2.1vw, 0.93rem);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .guest-auth-panel--partner {
@@ -68,7 +140,8 @@
   border-radius: 11px;
   padding: 0.7rem 1rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: clamp(0.88rem, 2vw, 0.95rem);
+  line-height: 1.2;
   border: 1px solid transparent;
   transition:
     transform 160ms ease,
@@ -103,6 +176,7 @@
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  width: fit-content;
 }
 
 .auth-route-prompt {
@@ -192,9 +266,39 @@
 }
 
 @media (max-width: 620px) {
+  .profile-page--hub {
+    padding-inline: clamp(0.65rem, 3.4vw, 0.9rem);
+    padding-top: 0.65rem;
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .profile-page--hub .profile-header {
+    border-radius: 18px;
+    padding: clamp(0.82rem, 3.5vw, 1rem);
+  }
+
   .guest-profile-hero {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .guest-profile-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+  }
+
+  .guest-auth-panel {
+    border-radius: 14px;
+  }
+
+  .profile-page--hub .profile-grid,
+  .profile-page--hub .profile-grid--compact {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-page--hub .profile-tile {
+    min-height: 3.95rem;
   }
 
   .guest-auth-actions,
@@ -210,9 +314,35 @@
     width: 100%;
   }
 
+  .profile-page--hub .profile-meta {
+    flex-direction: column;
+  }
+
+  .profile-page--hub .profile-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
   .auth-required-modal {
     border-radius: 16px;
     padding: 1rem;
+  }
+}
+
+@media (min-width: 621px) and (max-width: 1024px) {
+  .profile-page--hub {
+    padding-inline: clamp(0.9rem, 2.4vw, 1.25rem);
+  }
+
+  .profile-page--hub .profile-grid,
+  .profile-page--hub .profile-grid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1025px) {
+  .profile-page--hub {
+    padding-inline: clamp(1.4rem, 3.2vw, 2.5rem);
   }
 }
 

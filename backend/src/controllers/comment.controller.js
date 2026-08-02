@@ -1,7 +1,7 @@
 const commentModel = require("../models/comment.model");
 const foodModel = require("../models/food.model");
 const { getIO } = require("../sockets/socketManager");
-
+const mongoose = require("mongoose");
 async function createComment(req, res) {
   try {
     const { foodId, text } = req.body;
@@ -56,7 +56,10 @@ async function createComment(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -77,13 +80,22 @@ async function getCommentsByFood(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
 
 async function deleteComment(req, res) {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid comment id",
+      });
+    }
     const comment = await commentModel.findById(req.params.id);
 
     if (!comment) {
@@ -113,7 +125,10 @@ async function deleteComment(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }

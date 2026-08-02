@@ -1,17 +1,24 @@
 require("dotenv").config();
 
-const emailService = require("./src/services/email.service");
+const transporter = require("./src/config/email.config");
 
-async function test() {
-  const partner = {
-    ownerName: "Apoorv Yadav",
-    restaurantName: "Apoorv's Kitchen",
-    email: process.env.EMAIL,
-  };
+(async () => {
+  try {
+    console.log("EMAIL:", process.env.EMAIL);
+    console.log("PASSWORD:", process.env.EMAIL_PASSWORD);
 
-  await emailService.sendRestaurantWelcomeEmail(partner);
+    await transporter.verify();
+    console.log("✅ SMTP Connected");
 
-  console.log("✅ Restaurant Welcome Email Sent Successfully");
-}
+    await transporter.sendMail({
+      from: `"FoodieK Team" <${process.env.EMAIL}>`,
+      to: process.env.EMAIL,
+      subject: "FoodieK Test",
+      text: "Testing Nodemailer",
+    });
 
-test();
+    console.log("✅ Email Sent Successfully");
+  } catch (err) {
+    console.error(err);
+  }
+})();

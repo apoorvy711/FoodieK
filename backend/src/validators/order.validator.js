@@ -10,8 +10,16 @@ const removeFromCartValidation = [
 ];
 
 const createOrderValidation = [
-  body("deliveryAddress").isString().trim().isLength({ min: 4, max: 240 }),
-  body("paymentMethod").optional().isIn(["cash", "card", "upi", "wallet"]),
+  body("deliveryAddress")
+    .isString()
+    .trim()
+    .isLength({ min: 4, max: 240 })
+    .withMessage("Delivery address must be between 4 and 240 characters"),
+
+  body("paymentMethod")
+    .optional()
+    .isIn(["cash", "card", "upi", "wallet"])
+    .withMessage("Invalid payment method"),
 ];
 
 const updateOrderStatusValidation = [

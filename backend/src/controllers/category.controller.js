@@ -41,7 +41,10 @@ exports.createCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 };
@@ -88,7 +91,10 @@ exports.getCategories = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 };
@@ -112,7 +118,10 @@ exports.getCategoryById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 };
@@ -140,7 +149,6 @@ exports.updateCategory = async (req, res) => {
       },
     );
     await redisClient.del("categories");
-    console.log("🗑️ Categories Cache Cleared");
 
     if (!category) {
       return res.status(404).json({
@@ -157,7 +165,10 @@ exports.updateCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 };
@@ -167,7 +178,6 @@ exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
     await redisClient.del("categories");
-    console.log("🗑️ Categories Cache Cleared");
     if (!category) {
       return res.status(404).json({
         success: false,
@@ -182,7 +192,10 @@ exports.deleteCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 };

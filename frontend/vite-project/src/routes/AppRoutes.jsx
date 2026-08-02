@@ -17,6 +17,9 @@ import Notifications from "../pages/general/Notifications";
 import Cart from "../pages/general/Cart";
 import Checkout from "../pages/general/Checkout";
 import Orders from "../pages/general/Orders";
+import OrderDetails from "../pages/general/OrderDetails";
+import OrderSuccess from "../pages/general/OrderSuccess";
+import OrderFailure from "../pages/general/OrderFailure";
 import ProfileHub from "../pages/general/ProfileHub";
 import BottomNav from "../components/BottomNav";
 import CreateFood from "../pages/food-partner/CreateFood";
@@ -52,6 +55,18 @@ const titleMap = [
   {
     matcher: (pathname) => pathname === "/orders",
     title: "My Orders | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/orders/success",
+    title: "Order Success | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/orders/failure",
+    title: "Order Failed | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname.startsWith("/orders/"),
+    title: "Order Details | FoodieK",
   },
   {
     matcher: (pathname) => pathname === "/checkout",
@@ -169,6 +184,39 @@ const AppRoutes = () => {
               <CustomerProtectedRoute>
                 <>
                   <Orders />
+                  <BottomNav />
+                </>
+              </CustomerProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:orderId"
+            element={
+              <CustomerProtectedRoute>
+                <>
+                  <OrderDetails />
+                  <BottomNav />
+                </>
+              </CustomerProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/success"
+            element={
+              <CustomerProtectedRoute>
+                <>
+                  <OrderSuccess />
+                  <BottomNav />
+                </>
+              </CustomerProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/failure"
+            element={
+              <CustomerProtectedRoute>
+                <>
+                  <OrderFailure />
                   <BottomNav />
                 </>
               </CustomerProtectedRoute>

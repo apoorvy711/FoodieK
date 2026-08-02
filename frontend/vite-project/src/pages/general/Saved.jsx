@@ -23,9 +23,7 @@ const Saved = () => {
         setVideos(savedFoods);
         return;
       }
-
-      const fallbackResponse = await api.get("/food");
-      setVideos((fallbackResponse.data.foodItems || []).slice(0, 6));
+      setVideos([]);
     } catch (error) {
       setVideos([]);
     } finally {
@@ -47,17 +45,24 @@ const Saved = () => {
   };
 
   return (
-    <ReelFeed
-      items={videos}
-      onSave={removeSaved}
-      isLoading={loading}
-      emptyTitle={loading ? "Loading saved dishes" : "No saved dishes yet"}
-      emptyMessage={
-        loading
-          ? "Your saved list is being prepared."
-          : "Save dishes to build your personal collection."
-      }
-    />
+    <div className="ordering-page saved-ordering-page">
+      <ReelFeed
+        items={videos}
+        onSave={removeSaved}
+        isLoading={loading}
+        emptyTitle={loading ? "Loading saved dishes" : "No saved dishes yet"}
+        emptyMessage={
+          loading
+            ? "Your saved list is being prepared."
+            : "Save dishes to build your personal collection."
+        }
+        emptyDescription={
+          loading
+            ? ""
+            : "Items you save from reels and food cards will appear here."
+        }
+      />
+    </div>
   );
 };
 

@@ -10,14 +10,49 @@ const {
   deleteCategory,
 } = require("../controllers/category.controller");
 
-router.post("/", createCategory);
+router.post(
+  "/",
+  /*
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Create Category'
+  */
+  createCategory,
+);
 
-router.get("/", getCategories);
+router.get(
+  "/",
+  /*
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Get All Categories'
+  */
+  getCategories,
+);
 
-router.get("/:id", getCategoryById);
+router.get(
+  "/:id",
+  /*
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Get Category Details'
+  */
+  getCategoryById,
+);
 
-router.patch("/:id", updateCategory);
+router.patch(
+  "/:id",
+  /*
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Update Category'
+  */
+  updateCategory,
+);
 
-router.delete("/:id", deleteCategory);
+router.delete(
+  "/:id",
+  /*
+    #swagger.tags = ['Categories']
+    #swagger.summary = 'Delete Category'
+  */
+  deleteCategory,
+);
 
 module.exports = router;

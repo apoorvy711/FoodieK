@@ -1,6 +1,6 @@
 const notificationModel = require("../models/notification.model");
 const notificationService = require("../services/notification.service");
-
+const mongoose = require("mongoose");
 async function getNotifications(req, res) {
   try {
     const notifications = await notificationModel
@@ -15,13 +15,22 @@ async function getNotifications(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
 
 async function markNotificationRead(req, res) {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid notification id",
+      });
+    }
     const notification = await notificationModel.findOne({
       _id: req.params.id,
       user: req.user._id,
@@ -45,7 +54,10 @@ async function markNotificationRead(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }

@@ -99,9 +99,6 @@ async function createPaymentIntent(req, res) {
         message: "Razorpay is not configured on server",
       });
     }
-    // Check if .env values are loaded
-    console.log("KEY_ID:", process.env.RAZORPAY_KEY_ID);
-    console.log("KEY_SECRET:", process.env.RAZORPAY_KEY_SECRET);
 
     const razorpayOrder = await razorpay.orders.create({
       amount: Math.round(order.totalAmount * 100),
@@ -144,16 +141,15 @@ async function createPaymentIntent(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
 
 async function verifyPayment(req, res) {
-  console.log("\n================ VERIFY PAYMENT HIT ================");
-  console.log("Request Body:", req.body);
-  console.log("===================================================\n");
-
   try {
     const {
       orderId,
@@ -258,17 +254,9 @@ async function verifyPayment(req, res) {
     const cartModel = require("../models/cart.model");
 
     try {
-      console.log("🗑️ Deleting cart for user:", order.user.toString());
-
       const deletedCart = await cartModel.findOneAndDelete({
         user: order.user,
       });
-
-      if (deletedCart) {
-        console.log("✅ Cart deleted successfully");
-      } else {
-        console.log("ℹ️ No cart found to delete");
-      }
     } catch (cartError) {
       console.error("❌ Failed to delete cart");
       console.error(cartError);
@@ -295,7 +283,10 @@ async function verifyPayment(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }
@@ -327,10 +318,6 @@ async function handleWebhook(req, res) {
         message: "Invalid webhook signature",
       });
     }
-    console.log("========== RAZORPAY WEBHOOK ==========");
-    console.log("Event:", req.body.event);
-    console.log(JSON.stringify(req.body, null, 2));
-    console.log("======================================");
 
     const event = req.body.event;
 
@@ -471,7 +458,10 @@ async function handleWebhook(req, res) {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        process.env.NODE_ENV === "production"
+          ? "Internal Server Error"
+          : error.message,
     });
   }
 }

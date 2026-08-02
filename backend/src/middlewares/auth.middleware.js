@@ -23,7 +23,7 @@ async function authUserMiddleware(req, res, next) {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     if (decoded.role && decoded.role !== "user") {
       return res.status(403).json({
         success: false,
@@ -68,7 +68,7 @@ async function authFoodPartnerMiddleware(req, res, next) {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
     if (decoded.role && decoded.role !== "food_partner") {
       return res.status(403).json({
@@ -109,7 +109,7 @@ async function authAdminMiddleware(req, res, next) {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
     const user = await userModel.findById(decoded.id);
 

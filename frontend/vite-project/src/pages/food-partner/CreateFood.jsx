@@ -50,9 +50,7 @@ const CreateFood = () => {
         const response = await api.get("/categories");
 
         setCategories(response.data.categories || []);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     loadCategories();
@@ -145,8 +143,6 @@ const CreateFood = () => {
 
       navigate("/");
     } catch (err) {
-      console.log(err);
-
       alert(err.response?.data?.message || "Upload failed.");
     }
 

@@ -1,17 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-console.log(require("cookie"));
 const userModel = require("../models/user.model");
 const foodPartnerModel = require("../models/foodpartner.model");
 
 async function socketAuthMiddleware(socket, next) {
   try {
-    console.log("\n========== SOCKET AUTH ==========");
-
     const cookieHeader = socket.handshake.headers.cookie;
 
     if (!cookieHeader) {
-      console.log("❌ No cookie header");
       return next(new Error("Authentication required"));
     }
 
@@ -25,13 +21,10 @@ async function socketAuthMiddleware(socket, next) {
     const token = cookies.token;
 
     if (!token) {
-      console.log("❌ Token missing");
       return next(new Error("Authentication required"));
     }
 
-    console.log("✅ Token Found");
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
     let authenticatedUser = null;
 
@@ -42,7 +35,6 @@ async function socketAuthMiddleware(socket, next) {
     }
 
     if (!authenticatedUser) {
-      console.log("❌ User not found");
       return next(new Error("Authentication failed"));
     }
 
@@ -51,7 +43,6 @@ async function socketAuthMiddleware(socket, next) {
 
     next();
   } catch (error) {
-    console.log("❌ SOCKET AUTH ERROR");
     console.log(error);
 
     return next(new Error("Authentication failed"));
