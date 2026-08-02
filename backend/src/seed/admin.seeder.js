@@ -13,32 +13,68 @@ async function ensureSingleAdminFromEnv() {
     return { created: false, skipped: true };
   }
 
-  const existingAdmin = await userModel
-    .findOne({ role: "admin" })
-    .select("_id");
-
-  if (existingAdmin) {
-    console.log("[admin-seeder] Admin already exists. No new admin created.");
-    return { created: false, skipped: true };
-  }
-
-  const existingUserByEmail = await userModel.findOne({ email: adminEmail });
-
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-  if (existingUserByEmail) {
-    existingUserByEmail.fullName = adminName;
-    existingUserByEmail.password = hashedPassword;
-    existingUserByEmail.role = "admin";
-    await existingUserByEmail.save();
+  // Look for an existing admin first
+  let admin = await userModel.findOne({ role: "admin" });
+
+  if (admin) {
+    admin.fullName = adminName;
+    admin.email = adminEmail;
+
+    // Update password only if it has changed
+    const passwordMatches = await bcrypt.compare(adminPassword, admin.password);
+
+    if (!passwordMatches) {
+      admin.password = hashedPassword;
+    }
+
+    admin.role = "admin";
+
+    await admin.save();
+
+    console.log(
+      "[admin-seeder] Existing admin synchronized with ADMIN_* environment variables.",
+    );
+
+    return {
+      created: false,
+      updated: true,
+    };
+  }
+
+  // No admin exists.
+  // Check if there's already a normal user with the configured email.
+  const existingUser = await userModel.findOne({ email: adminEmail });
+
+  if (existingUser) {
+    existingUser.fullName = adminName;
+
+    const passwordMatches = await bcrypt.compare(
+      adminPassword,
+      existingUser.password,
+    );
+
+    if (!passwordMatches) {
+      existingUser.password = hashedPassword;
+    }
+
+    existingUser.role = "admin";
+
+    await existingUser.save();
 
     console.log(
       "[admin-seeder] Existing user promoted to admin using ADMIN_EMAIL.",
     );
 
-    return { created: true, promoted: true };
+    return {
+      created: false,
+      promoted: true,
+      updated: true,
+    };
   }
 
+  // Create a brand new admin
   await userModel.create({
     fullName: adminName,
     email: adminEmail,
@@ -48,7 +84,10 @@ async function ensureSingleAdminFromEnv() {
 
   console.log("[admin-seeder] Admin created successfully.");
 
-  return { created: true, promoted: false };
+  return {
+    created: true,
+    promoted: false,
+  };
 }
 
 module.exports = {
