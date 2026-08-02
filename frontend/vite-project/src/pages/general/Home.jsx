@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import api from "../../api/api";
 import { useAuth } from "../../auth/AuthContext";
@@ -25,16 +25,16 @@ const Home = () => {
   const { requireCustomerAuth, modalConfig, closeAuthModal } =
     useAuthRequiredModal();
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const response = await api.get("/categories");
       setCategories(response.data.categories || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
-  };
+  }, []);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!auth.isUser) {
       setNotificationsCount(0);
       return;
@@ -43,12 +43,12 @@ const Home = () => {
     try {
       const response = await api.get("/notifications");
       setNotificationsCount(response.data.unreadCount || 0);
-    } catch (error) {
+    } catch {
       setNotificationsCount(0);
     }
-  };
+  }, [auth.isUser]);
 
-  const fetchFoods = async (category = "", search = "") => {
+  const fetchFoods = useCallback(async (category = "", search = "") => {
     try {
       setLoading(true);
 
@@ -75,7 +75,7 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchCategories();
@@ -116,11 +116,11 @@ const Home = () => {
         { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 },
       );
     }
-  }, [auth.isUser]);
+  }, [auth.isUser, fetchCategories, fetchNotifications]);
 
   useEffect(() => {
     fetchFoods(selectedCategory, searchTerm);
-  }, [selectedCategory, searchTerm]);
+  }, [fetchFoods, selectedCategory, searchTerm]);
 
   const openLocationEditor = () => {
     setLocationInput(location);

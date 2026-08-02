@@ -10,7 +10,7 @@ const ReelFeed = ({
   onSave,
   onShare,
   onOrder,
-  onComment,
+  onComment: _onComment,
   isLoading = false,
   emptyMessage = "No videos yet.",
   emptyTitle = "Nothing to see here yet",

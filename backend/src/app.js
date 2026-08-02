@@ -17,6 +17,7 @@ const securityMiddleware = require("./middlewares/security.middleware");
 const adminRoutes = require("./routes/admin.routes");
 const paymentRoutes = require("./routes/payment.routes");
 const categoryRoutes = require("./routes/category.routes");
+const restaurantRequestRoutes = require("./routes/restaurant-request.routes");
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -46,6 +47,8 @@ const allowedOrigins = new Set([
   "http://127.0.0.1:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5174",
+  "http://localhost:5175",
+  "http://127.0.0.1:5175",
 
   "http://localhost:8080",
   "http://127.0.0.1:8080",
@@ -56,6 +59,7 @@ const allowedOrigins = new Set([
 
   "https://foodiek.in",
   "https://www.foodiek.in",
+  "https://admin.foodiek.in",
 ]);
 
 app.use(
@@ -138,6 +142,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/restaurant-request", restaurantRequestRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

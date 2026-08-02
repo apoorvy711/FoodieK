@@ -1,0 +1,19 @@
+.admin-detail-card p {
+  margin: 0.25rem 0;
+  color: #334155;
+}
+
+.admin-detail-card strong {
+  color: #0f172a;
+}
+
+.admin-table-card tbody tr:hover {
+  background: #f8fafc;
+}
+
+.admin-login-form button:disabled,
+.admin-logout-btn:disabled,
+.admin-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

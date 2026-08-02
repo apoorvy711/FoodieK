@@ -50,7 +50,9 @@ const CreateFood = () => {
         const response = await api.get("/categories");
 
         setCategories(response.data.categories || []);
-      } catch (err) {}
+      } catch {
+        setCategories([]);
+      }
     }
 
     loadCategories();

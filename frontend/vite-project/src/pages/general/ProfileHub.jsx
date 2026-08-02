@@ -125,7 +125,15 @@ function UserProfileView({ user, onLogout }) {
   );
 }
 
-function FoodPartnerProfileView({ foodPartner, onLogout }) {
+function FoodPartnerProfileView({
+  foodPartner,
+  onLogout,
+  isFeatureLocked,
+  status,
+}) {
+  const isPending = status === "pending";
+  const isRejected = status === "rejected";
+
   return (
     <main className="profile-page profile-page--hub">
       <section className="profile-header">
@@ -151,12 +159,30 @@ function FoodPartnerProfileView({ foodPartner, onLogout }) {
         </div>
 
         <div className="profile-grid profile-grid--compact">
-          <Link to="/food-partner/account" className="glass-card profile-tile">
-            Partner Dashboard
-          </Link>
-          <Link to="/create-food" className="glass-card profile-tile">
-            Add New Dish
-          </Link>
+          {isFeatureLocked ? (
+            <Link
+              to="/food-partner/verification"
+              className="glass-card profile-tile"
+            >
+              {isPending
+                ? "Verification Pending"
+                : isRejected
+                  ? "Verification Rejected"
+                  : "Start Verification"}
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/food-partner/account"
+                className="glass-card profile-tile"
+              >
+                Partner Dashboard
+              </Link>
+              <Link to="/create-food" className="glass-card profile-tile">
+                Add New Dish
+              </Link>
+            </>
+          )}
           {foodPartner?._id && (
             <Link
               to={`/food-partner/${foodPartner._id}`}
@@ -202,6 +228,8 @@ const ProfileHub = () => {
       <FoodPartnerProfileView
         foodPartner={auth.foodPartner}
         onLogout={onLogout}
+        isFeatureLocked={auth.isRestaurantFeatureLocked}
+        status={auth.restaurantVerification?.status}
       />
     );
   }

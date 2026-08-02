@@ -25,12 +25,14 @@ import BottomNav from "../components/BottomNav";
 import CreateFood from "../pages/food-partner/CreateFood";
 import Profile from "../pages/food-partner/Profile";
 import Account from "../pages/food-partner/Account";
+import RestaurantVerification from "../pages/food-partner/RestaurantVerification";
 import AdminDashboard from "../pages/admin/Dashboard";
 import NotFound from "../pages/general/NotFound";
 import { AuthProvider } from "../auth/AuthContext";
 import {
   AdminProtectedRoute,
   CustomerProtectedRoute,
+  FoodPartnerFeatureUnlockedRoute,
   FoodPartnerProtectedRoute,
 } from "../components/auth/ProtectedRoute";
 import ResetPassword from "../pages/auth/ResetPassword";
@@ -43,6 +45,10 @@ const titleMap = [
   {
     matcher: (pathname) => pathname.startsWith("/food/"),
     title: "Food Details | FoodieK",
+  },
+  {
+    matcher: (pathname) => pathname === "/food-partner/verification",
+    title: "Restaurant Verification | FoodieK",
   },
   {
     matcher: (pathname) => pathname.startsWith("/food-partner/"),
@@ -234,16 +240,24 @@ const AppRoutes = () => {
           <Route
             path="/create-food"
             element={
-              <FoodPartnerProtectedRoute>
+              <FoodPartnerFeatureUnlockedRoute>
                 <CreateFood />
-              </FoodPartnerProtectedRoute>
+              </FoodPartnerFeatureUnlockedRoute>
             }
           />
           <Route
             path="/food-partner/account"
             element={
-              <FoodPartnerProtectedRoute>
+              <FoodPartnerFeatureUnlockedRoute>
                 <Account />
+              </FoodPartnerFeatureUnlockedRoute>
+            }
+          />
+          <Route
+            path="/food-partner/verification"
+            element={
+              <FoodPartnerProtectedRoute>
+                <RestaurantVerification />
               </FoodPartnerProtectedRoute>
             }
           />

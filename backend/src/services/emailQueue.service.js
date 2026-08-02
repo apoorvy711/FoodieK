@@ -60,8 +60,87 @@ async function addForgotPasswordEmail({ name, email, resetLink }) {
   );
 }
 
+/**
+ * Queue Restaurant Verification Started Email
+ */
+async function addRestaurantVerificationStartedEmail({
+  email,
+  ownerName,
+  restaurantName,
+}) {
+  return emailQueue.add(
+    "restaurantVerificationStarted",
+    {
+      email,
+      ownerName,
+      restaurantName,
+    },
+    queueOptions,
+  );
+}
+
+/**
+ * Queue Restaurant Approved Email
+ */
+async function addRestaurantApprovedEmail({
+  email,
+  ownerName,
+  restaurantName,
+}) {
+  return emailQueue.add(
+    "restaurantApproved",
+    {
+      email,
+      ownerName,
+      restaurantName,
+    },
+    queueOptions,
+  );
+}
+
+/**
+ * Queue Restaurant Rejected Email
+ */
+async function addRestaurantRejectedEmail({
+  email,
+  ownerName,
+  restaurantName,
+  rejectionReason,
+}) {
+  return emailQueue.add(
+    "restaurantRejected",
+    {
+      email,
+      ownerName,
+      restaurantName,
+      rejectionReason,
+    },
+    queueOptions,
+  );
+}
+
+/**
+ * Queue Announcement Email
+ */
+async function addAnnouncementEmail({ email, recipientName, title, message }) {
+  return emailQueue.add(
+    "announcement",
+    {
+      email,
+      recipientName,
+      title,
+      message,
+    },
+    queueOptions,
+  );
+}
+
 module.exports = {
   addCustomerWelcomeEmail,
   addRestaurantWelcomeEmail,
   addForgotPasswordEmail,
+  addRestaurantVerificationStartedEmail,
+  addRestaurantApprovedEmail,
+  addRestaurantRejectedEmail,
+  addAnnouncementEmail,
 };

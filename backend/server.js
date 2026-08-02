@@ -12,6 +12,7 @@ const bullBoard = require("./src/bullboard/bullBoard");
 
 const connectDB = require("./src/db/db");
 const redisClient = require("./src/config/redis");
+const { ensureSingleAdminFromEnv } = require("./src/seed/admin.seeder");
 
 const { initializeSocket } = require("./src/sockets/socket");
 const initializeNotificationListener = require("./src/listeners/notification.listener");
@@ -23,6 +24,9 @@ async function startServer() {
   try {
     // Connect MongoDB
     await connectDB();
+
+    // Ensure exactly one admin account exists
+    await ensureSingleAdminFromEnv();
 
     // Connect Redis
     if (!redisClient.isOpen) {

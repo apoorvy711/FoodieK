@@ -27,6 +27,37 @@ function guestState() {
     role: "guest",
     user: null,
     foodPartner: null,
+    restaurantVerification: null,
+    verificationLoading: false,
+  };
+}
+
+function defaultVerificationState() {
+  return {
+    hasRequest: false,
+    status: "not_submitted",
+    message: "",
+    request: null,
+    isRestaurantFeatureLocked: true,
+  };
+}
+
+function normalizeVerificationResponse(data) {
+  if (!data || data.hasRequest === false) {
+    return defaultVerificationState();
+  }
+
+  const status = data.status || "unknown";
+
+  return {
+    hasRequest: Boolean(data.hasRequest),
+    status,
+    message: data.message || "",
+    request: data.request || null,
+    isRestaurantFeatureLocked:
+      typeof data.isRestaurantFeatureLocked === "boolean"
+        ? data.isRestaurantFeatureLocked
+        : status !== "approved",
   };
 }
 
@@ -36,6 +67,8 @@ export function AuthProvider({ children }) {
     role: "guest",
     user: null,
     foodPartner: null,
+    restaurantVerification: null,
+    verificationLoading: false,
   });
   const sessionToastShownRef = useRef(false);
 
@@ -46,18 +79,25 @@ export function AuthProvider({ children }) {
       role: normalizeUserRole(user),
       user,
       foodPartner: null,
+      restaurantVerification: null,
+      verificationLoading: false,
     });
   }, []);
 
-  const setAuthenticatedFoodPartner = useCallback((foodPartner) => {
-    window.sessionStorage.setItem(AUTH_MARKER_KEY, "1");
-    setAuthState({
-      status: "authenticated",
-      role: "food_partner",
-      user: null,
-      foodPartner,
-    });
-  }, []);
+  const setAuthenticatedFoodPartner = useCallback(
+    (foodPartner, verification) => {
+      window.sessionStorage.setItem(AUTH_MARKER_KEY, "1");
+      setAuthState({
+        status: "authenticated",
+        role: "food_partner",
+        user: null,
+        foodPartner,
+        restaurantVerification: verification,
+        verificationLoading: false,
+      });
+    },
+    [],
+  );
 
   const setGuest = useCallback(() => {
     setAuthState(guestState());
@@ -74,7 +114,7 @@ export function AuthProvider({ children }) {
       setAuthenticatedUser(userResponse.data.user);
       sessionToastShownRef.current = false;
       return;
-    } catch (error) {
+    } catch {
       // continue to partner check
     }
 
@@ -83,16 +123,106 @@ export function AuthProvider({ children }) {
         __skipAuthHandler: true,
       });
 
-      setAuthenticatedFoodPartner(partnerResponse.data.foodPartner);
+      let verification = defaultVerificationState();
+
+      try {
+        const verificationResponse = await api.get(
+          "/restaurant-request/status",
+          {
+            __skipAuthHandler: true,
+            __suppressAuthToast: true,
+          },
+        );
+
+        verification = normalizeVerificationResponse(verificationResponse.data);
+      } catch {
+        verification = {
+          ...defaultVerificationState(),
+          status: "unknown",
+          message: "Could not fetch verification status",
+          isRestaurantFeatureLocked: true,
+        };
+      }
+
+      setAuthenticatedFoodPartner(
+        partnerResponse.data.foodPartner,
+        verification,
+      );
       sessionToastShownRef.current = false;
       return;
-    } catch (error) {
+    } catch {
       setGuest();
     }
   }, [setAuthenticatedFoodPartner, setAuthenticatedUser, setGuest]);
 
+  const refreshRestaurantVerification = useCallback(async () => {
+    if (authState.role !== "food_partner") {
+      return null;
+    }
+
+    setAuthState((current) => {
+      if (current.role !== "food_partner") {
+        return current;
+      }
+
+      return {
+        ...current,
+        verificationLoading: true,
+      };
+    });
+
+    try {
+      const response = await api.get("/restaurant-request/status", {
+        __skipAuthHandler: true,
+        __suppressAuthToast: true,
+      });
+      const normalized = normalizeVerificationResponse(response.data);
+
+      setAuthState((current) => {
+        if (current.role !== "food_partner") {
+          return current;
+        }
+
+        return {
+          ...current,
+          restaurantVerification: normalized,
+          verificationLoading: false,
+        };
+      });
+
+      return normalized;
+    } catch {
+      const fallback = {
+        ...defaultVerificationState(),
+        status: "unknown",
+        message: "Could not fetch verification status",
+        isRestaurantFeatureLocked: true,
+      };
+
+      setAuthState((current) => {
+        if (current.role !== "food_partner") {
+          return current;
+        }
+
+        return {
+          ...current,
+          restaurantVerification: fallback,
+          verificationLoading: false,
+        };
+      });
+
+      return fallback;
+    }
+  }, [authState.role]);
+
   useEffect(() => {
-    refreshAuth();
+    const timer = setTimeout(() => {
+      refreshAuth();
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [refreshAuth]);
 
   useEffect(() => {
@@ -130,7 +260,7 @@ export function AuthProvider({ children }) {
       } else {
         await api.get("/auth/user/logout", { __skipAuthHandler: true });
       }
-    } catch (error) {
+    } catch {
       // Ignore logout network errors and clear local auth state anyway.
     }
 
@@ -145,10 +275,20 @@ export function AuthProvider({ children }) {
       isUser: authState.role === "user" || authState.role === "admin",
       isFoodPartner: authState.role === "food_partner",
       isAdmin: authState.role === "admin",
+      restaurantVerification:
+        authState.role === "food_partner"
+          ? authState.restaurantVerification || defaultVerificationState()
+          : null,
+      isRestaurantFeatureLocked:
+        authState.role === "food_partner"
+          ? (authState.restaurantVerification || defaultVerificationState())
+              .isRestaurantFeatureLocked
+          : false,
       refreshAuth,
+      refreshRestaurantVerification,
       logoutCurrent,
     }),
-    [authState, logoutCurrent, refreshAuth],
+    [authState, logoutCurrent, refreshAuth, refreshRestaurantVerification],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

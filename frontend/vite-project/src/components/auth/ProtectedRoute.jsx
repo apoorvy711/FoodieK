@@ -123,6 +123,49 @@ export function FoodPartnerProtectedRoute({ children }) {
   );
 }
 
+export function FoodPartnerFeatureUnlockedRoute({ children }) {
+  const auth = useAuth();
+  const location = useLocation();
+
+  if (!auth.authResolved || auth.verificationLoading) {
+    return (
+      <div className="loading-screen">
+        <h2>Checking restaurant verification...</h2>
+      </div>
+    );
+  }
+
+  if (!auth.isFoodPartner) {
+    return <FoodPartnerProtectedRoute>{children}</FoodPartnerProtectedRoute>;
+  }
+
+  if (!auth.isRestaurantFeatureLocked) {
+    return children;
+  }
+
+  const status = auth.restaurantVerification?.status || "not_submitted";
+  const rejectionReason = auth.restaurantVerification?.request?.rejectionReason;
+
+  const description =
+    status === "pending"
+      ? "Your restaurant verification is pending. Food and dashboard features will unlock after approval."
+      : status === "rejected"
+        ? `Your last verification request was rejected${rejectionReason ? `: ${rejectionReason}` : ""}. Update details and resubmit to continue.`
+        : "Complete restaurant verification to unlock partner dashboard and food management features.";
+
+  return (
+    <AuthRoutePrompt
+      title="Verification required"
+      description={description}
+      primaryLabel="Open Verification"
+      primaryTo="/food-partner/verification"
+      secondaryLabel="Back to Profile"
+      secondaryTo="/profile"
+      from={location.pathname + location.search}
+    />
+  );
+}
+
 export function AdminProtectedRoute({ children }) {
   const auth = useAuth();
   const location = useLocation();

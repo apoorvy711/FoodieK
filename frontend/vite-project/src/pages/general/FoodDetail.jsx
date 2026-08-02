@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Link,
   useLocation,
@@ -21,37 +21,36 @@ const FoodDetail = () => {
   const [relatedFoods, setRelatedFoods] = useState([]);
   const videoRef = useRef(null);
   const [videoProgress, setVideoProgress] = useState(0);
-  const [videoDuration, setVideoDuration] = useState(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const clickTimeoutRef = useRef(null);
   const lastClickRef = useRef(0);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [commentModalOpen, setCommentModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const hasPrefetchedFood = Boolean(location.state?.food);
   const { requireCustomerAuth, modalConfig, closeAuthModal } =
     useAuthRequiredModal();
 
-  const fetchFoodDetail = async () => {
+  const fetchFoodDetail = useCallback(async () => {
     try {
       const response = await api.get(`/food/${id}`);
       setFood(response.data.food);
       setRelatedFoods(response.data.relatedFoods || []);
     } catch (error) {
-      if (!location.state?.food) {
+      if (!hasPrefetchedFood) {
         toast.error("Could not load food details");
       }
     }
-  };
+  }, [hasPrefetchedFood, id]);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await api.get(`/comments/${id}`);
       setComments(response.data.comments || []);
     } catch (error) {
       setComments([]);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     if (!id) return;
@@ -63,7 +62,7 @@ const FoodDetail = () => {
     };
 
     loadData();
-  }, [id, location.state]);
+  }, [fetchComments, fetchFoodDetail, id]);
 
   useEffect(() => {
     if (searchParams.get("openComments") === "1") {
@@ -198,10 +197,8 @@ const FoodDetail = () => {
 
     if (video.paused) {
       video.play().catch(() => {});
-      setIsVideoPlaying(true);
     } else {
       video.pause();
-      setIsVideoPlaying(false);
     }
   };
 
@@ -238,13 +235,6 @@ const FoodDetail = () => {
     if (!video || !video.duration) return;
 
     setVideoProgress((video.currentTime / video.duration) * 100);
-  };
-
-  const handleLoadedMetadata = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    setVideoDuration(video.duration || 0);
   };
 
   useEffect(() => {
@@ -336,9 +326,6 @@ const FoodDetail = () => {
               controlsList="nodownload"
               className="food-detail-video"
               onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleLoadedMetadata}
-              onPlay={() => setIsVideoPlaying(true)}
-              onPause={() => setIsVideoPlaying(false)}
               onContextMenu={(event) => event.preventDefault()}
             />
             <div className="food-detail-video-progress">

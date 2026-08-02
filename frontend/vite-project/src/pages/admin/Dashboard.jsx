@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../../api/api";
@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       const [statsResponse, foodsResponse] = await Promise.all([
         api.get("/admin/dashboard"),
@@ -19,23 +19,23 @@ const Dashboard = () => {
 
       setStats(statsResponse.data.stats || null);
       setFoods(foodsResponse.data.foods || []);
-    } catch (error) {
+    } catch {
       toast.error("Admin access required");
       navigate("/user/login");
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   const toggleFood = async (id) => {
     try {
       await api.patch(`/admin/foods/${id}/toggle`);
       await load();
-    } catch (error) {
+    } catch {
       toast.error("Could not update food status");
     }
   };

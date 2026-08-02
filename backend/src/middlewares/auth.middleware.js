@@ -86,6 +86,13 @@ async function authFoodPartnerMiddleware(req, res, next) {
       });
     }
 
+    if (foodPartner.isActive === false) {
+      return res.status(403).json({
+        success: false,
+        message: "Restaurant account is inactive. Please contact support.",
+      });
+    }
+
     req.foodPartner = foodPartner;
 
     next();

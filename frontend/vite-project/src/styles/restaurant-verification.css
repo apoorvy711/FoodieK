@@ -1,0 +1,146 @@
+@import "./theme.css";
+
+.restaurant-verification-page {
+  padding-bottom: 7rem;
+}
+
+.verification-status-card {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  padding: clamp(1rem, 2.8vw, 1.5rem);
+}
+
+.verification-section-label {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.verification-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 0.65rem;
+}
+
+.verification-title {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  color: #172033;
+}
+
+.verification-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  min-height: 34px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.verification-pill.is-pending {
+  color: #9a3412;
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.verification-pill.is-approved {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.verification-pill.is-rejected {
+  color: #991b1b;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.verification-pill.is-neutral {
+  color: #334155;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.verification-copy-group {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.verification-copy-group p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.55;
+}
+
+.verification-form-card {
+  width: min(100%, 1020px);
+}
+
+.verification-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.verification-subsection h3 {
+  margin: 0;
+  color: #172033;
+  font-size: 1rem;
+}
+
+.verification-approved-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.verification-approved-actions .btn-primary,
+.verification-approved-actions .btn-secondary {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.verification-approved-actions .btn-primary {
+  color: #fff;
+  background: #ea580c;
+  border: 0;
+}
+
+.verification-approved-actions .btn-secondary {
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+  background: #fff7ed;
+}
+
+.verification-inline-loader {
+  min-height: 170px;
+  margin-top: 0.5rem;
+  border-radius: 12px;
+  border: 1px dashed #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .verification-status-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .verification-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

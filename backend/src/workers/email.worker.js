@@ -46,6 +46,59 @@ const emailWorker = new Worker(
 
         break;
       }
+      case "restaurantVerificationStarted": {
+        const { email, ownerName, restaurantName } = job.data;
+
+        await emailService.sendRestaurantVerificationStartedEmail({
+          email,
+          ownerName,
+          restaurantName,
+        });
+
+        console.log(`Restaurant verification started email sent to ${email}`);
+
+        break;
+      }
+      case "restaurantApproved": {
+        const { email, ownerName, restaurantName } = job.data;
+
+        await emailService.sendRestaurantApprovedEmail({
+          email,
+          ownerName,
+          restaurantName,
+        });
+
+        console.log(`Restaurant approved email sent to ${email}`);
+
+        break;
+      }
+      case "restaurantRejected": {
+        const { email, ownerName, restaurantName, rejectionReason } = job.data;
+
+        await emailService.sendRestaurantRejectedEmail({
+          email,
+          ownerName,
+          restaurantName,
+          rejectionReason,
+        });
+
+        console.log(`Restaurant rejected email sent to ${email}`);
+
+        break;
+      }
+      case "announcement": {
+        const { email, recipientName, title, message } = job.data;
+
+        await emailService.sendAnnouncementEmail({
+          email,
+          recipientName,
+          title,
+          message,
+        });
+
+        console.log(`Announcement email sent to ${email}`);
+        break;
+      }
 
       default:
         console.log("Unknown Job:", job.name);

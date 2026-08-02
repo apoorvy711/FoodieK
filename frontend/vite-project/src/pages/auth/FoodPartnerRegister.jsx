@@ -24,11 +24,11 @@ const FoodPartnerRegister = () => {
         navigate("/food-partner/account");
         return;
       }
-    } catch (error) {
-      // Ignore fallback failures and use create-food as a safe default.
+    } catch {
+      // Ignore fallback failures and use account as a safe default.
     }
 
-    navigate("/create-food");
+    navigate("/food-partner/account");
   };
 
   const handleSubmit = async (e) => {

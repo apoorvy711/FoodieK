@@ -144,7 +144,7 @@ const Checkout = () => {
             },
           });
 
-          razorpayInstance.on("payment.failed", function (response) {
+          razorpayInstance.on("payment.failed", function () {
             reject(new Error("Payment failed"));
           });
 
